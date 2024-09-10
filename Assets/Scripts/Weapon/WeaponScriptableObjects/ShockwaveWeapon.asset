@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28963c7c52cf6fc46a5a64379aab515b, type: 3}
+  m_Name: ShockwaveWeapon
+  m_EditorClassIdentifier: 
+  weaponVisual: {fileID: 403246997971825730, guid: a3e1fc9792cd4764dab8e2b97fbe4539, type: 3}
+  _weaponObjectPoolTag: ShockwaveWeapon
+  _weaponCooldown: 4
+  _currentWeaponCooldown: 0
+  _projectilePrefab: {fileID: 1368470505411515553, guid: 4fb39e3d7ff55e345bc528bb1264fc09, type: 3}
+  _poolSize: 10
+  _targetTag: 
+  _muzzleFlashPrefab: {fileID: 5487836809483658365, guid: ccf35874ea38a8b4a8452287dab289bf, type: 3}
+  _accuracy: 0.529
+  _weaponSpeed: 40
+  _weaponDamage: 0
+  _weaponRange: 0
+  _magazineSize: 0

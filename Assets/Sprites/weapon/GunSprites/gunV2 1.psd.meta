@@ -1,0 +1,690 @@
+fileFormatVersion: 2
+guid: 7da8292868b7c4942a40043f8eae27a1
+importerOverride:
+  nativeImporterType: 2089858483
+  scriptedImporterType:
+    serializedVersion: 2
+    Hash: b10b55a1aa6a1aa32521bc0cab59632e
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: b2a9591990af98743ba3ff7cf1000886, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 1
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
+    isReadable: 0
+    streamingMipmaps: 1
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMipmapLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 34
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  spriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
+  mosaicSpriteImportData: []
+  rigSpriteImportData:
+  - name: TechGrip
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 41
+      y: 4
+      width: 29
+      height: 14
+    spriteID: c526770afca80f742a1f11a9c21f8d82
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 41, y: 4}
+    spritePosition: {x: 1, y: 9}
+  - name: MetalGrip
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 76
+      y: 4
+      width: 29
+      height: 14
+    spriteID: 34879eddd5834064a830a07d8290efe6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 76, y: 4}
+    spritePosition: {x: 1, y: 10}
+  - name: WoodenGrip
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 26
+      width: 29
+      height: 14
+    spriteID: 3e1dfa76d3a6de14482f7e56ac322aeb
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 26}
+    spritePosition: {x: 1, y: 10}
+  - name: LaserSight
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 55
+      y: 26
+      width: 13
+      height: 4
+    spriteID: 2f6e732b33a906d4e8f83ee45bd375ee
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 55, y: 26}
+    spritePosition: {x: 12, y: 23}
+  - name: ScopeSight
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 105
+      y: 46
+      width: 19
+      height: 4
+    spriteID: 5eab6d7aab918ea45a368cf0b91430b7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 105, y: 46}
+    spritePosition: {x: 11, y: 23}
+  - name: IronSight
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 94
+      y: 26
+      width: 16
+      height: 3
+    spriteID: e015d71913caad343b2b5ce60f59e2d7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 94, y: 26}
+    spritePosition: {x: 14, y: 23}
+  - name: ShockwaveSecondary
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 118
+      y: 26
+      width: 4
+      height: 6
+    spriteID: 460fd45009e53764283b492b78d588f6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 118, y: 26}
+    spritePosition: {x: 27, y: 12}
+  - name: MicroMissleSecondary
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 76
+      y: 26
+      width: 10
+      height: 5
+    spriteID: 919cea51b7766994398691b4b0273f77
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 76, y: 26}
+    spritePosition: {x: 27, y: 13}
+  - name: GernadeLauncherSecondary
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 38
+      y: 26
+      width: 9
+      height: 6
+    spriteID: 62a252874b3c25042b5be7501095e0a5
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 38, y: 26}
+    spritePosition: {x: 27, y: 12}
+  - name: BlunderbussBarrel
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 88
+      y: 46
+      width: 9
+      height: 9
+    spriteID: 4fa49ca26cc024744b702701145fbd18
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 88, y: 46}
+    spritePosition: {x: 29, y: 16}
+  - name: MachineGunBarrel
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 110
+      y: 4
+      width: 12
+      height: 7
+    spriteID: b4133a7721629da4199e558b7b9afa0b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 110, y: 4}
+    spritePosition: {x: 29, y: 17}
+  - name: LongBarrel
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 67
+      width: 9
+      height: 5
+    spriteID: b95770e0f7d727c4089146fb904f0609
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 67}
+    spritePosition: {x: 29, y: 18}
+  - name: PlasmaAmmo
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 46
+      width: 20
+      height: 13
+    spriteID: 11d6f605661bcd540bb6b63627e98386
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 46}
+    spritePosition: {x: 10, y: 9}
+  - name: ExplosiveAmmo
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 46
+      width: 20
+      height: 13
+    spriteID: 4e510d723de075b4fbc1e056ea2742fd
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 32, y: 46}
+    spritePosition: {x: 10, y: 9}
+  - name: LaserAmmo
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 60
+      y: 46
+      width: 20
+      height: 13
+    spriteID: 334b893fa37c95d4080c664f3306f609
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 60, y: 46}
+    spritePosition: {x: 10, y: 9}
+  - name: Base
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 29
+      height: 14
+    spriteID: 32c5c7ffb69fd3641aafb50137133eae
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 1, y: 9}
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  sharedRigSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: WebGL
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  mosaicLayers: 1
+  characterMode: 1
+  documentPivot: {x: 0, y: 0}
+  documentAlignment: 7
+  importHiddenLayers: 0
+  layerMappingOption: 2
+  generatePhysicsShape: 0
+  paperDollMode: 0
+  keepDupilcateSpriteName: 1
+  skeletonAssetReferenceID: 
+  pipeline: {instanceID: 0}
+  pipelineVersion: 
+  padding: 4
+  spriteSizeExpand: 0
+  spriteCategoryList:
+    categories: []
+  spritePackingTag: 
+  resliceFromLayer: 0
+  mosaicPSDLayers: []
+  rigPSDLayers:
+  - name: Grip3
+    spriteName: Grip3
+    isGroup: 0
+    parentIndex: -1
+    spriteID: c526770afca80f742a1f11a9c21f8d82
+    layerID: 0
+    mosaicPosition: {x: 41, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Grip2
+    spriteName: Grip2
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 34879eddd5834064a830a07d8290efe6
+    layerID: -2129311012
+    mosaicPosition: {x: 76, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Grip1
+    spriteName: Grip1
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 3e1dfa76d3a6de14482f7e56ac322aeb
+    layerID: -2129311011
+    mosaicPosition: {x: 4, y: 26}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Scope3
+    spriteName: Scope3
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 2f6e732b33a906d4e8f83ee45bd375ee
+    layerID: 1991954357
+    mosaicPosition: {x: 55, y: 26}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Scope2
+    spriteName: Scope2
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 5eab6d7aab918ea45a368cf0b91430b7
+    layerID: 425870416
+    mosaicPosition: {x: 105, y: 46}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Scope1
+    spriteName: Scope1
+    isGroup: 0
+    parentIndex: -1
+    spriteID: e015d71913caad343b2b5ce60f59e2d7
+    layerID: 829154943
+    mosaicPosition: {x: 94, y: 26}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Secondary3
+    spriteName: Secondary3
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 460fd45009e53764283b492b78d588f6
+    layerID: -1806009995
+    mosaicPosition: {x: 118, y: 26}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Secondary2
+    spriteName: Secondary2
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 919cea51b7766994398691b4b0273f77
+    layerID: -239926054
+    mosaicPosition: {x: 76, y: 26}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Secondary1
+    spriteName: Secondary1
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 62a252874b3c25042b5be7501095e0a5
+    layerID: -643210581
+    mosaicPosition: {x: 38, y: 26}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Barrel3
+    spriteName: Barrel3
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 4fa49ca26cc024744b702701145fbd18
+    layerID: -1084910939
+    mosaicPosition: {x: 88, y: 46}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Barrel2
+    spriteName: Barrel2
+    isGroup: 0
+    parentIndex: -1
+    spriteID: b4133a7721629da4199e558b7b9afa0b
+    layerID: -1084910940
+    mosaicPosition: {x: 110, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Barrel1
+    spriteName: Barrel1
+    isGroup: 0
+    parentIndex: -1
+    spriteID: b95770e0f7d727c4089146fb904f0609
+    layerID: -1084910941
+    mosaicPosition: {x: 4, y: 67}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: ammo3
+    spriteName: ammo3
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 11d6f605661bcd540bb6b63627e98386
+    layerID: -167210659
+    mosaicPosition: {x: 4, y: 46}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: ammo2
+    spriteName: ammo2
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 4e510d723de075b4fbc1e056ea2742fd
+    layerID: -167210658
+    mosaicPosition: {x: 32, y: 46}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: ammo1
+    spriteName: ammo1
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 334b893fa37c95d4080c664f3306f609
+    layerID: -167210661
+    mosaicPosition: {x: 60, y: 46}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Base
+    spriteName: Base
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 32c5c7ffb69fd3641aafb50137133eae
+    layerID: -1779161319
+    mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Background
+    spriteName: 
+    isGroup: 0
+    parentIndex: -1
+    spriteID: e22ca910efbeb3c4e976bdd30ae40b40
+    layerID: -1498723586
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 0
+  sharedRigPSDLayers: []
+  pSDLayerImportSetting: []
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  spriteSizeExpandChanged: 0
+  generateGOHierarchy: 0
+  textureAssetName: 
+  prefabAssetName: 
+  spriteLibAssetName: 
+  skeletonAssetName: 
+  secondarySpriteTextures: []

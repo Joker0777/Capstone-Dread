@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28963c7c52cf6fc46a5a64379aab515b, type: 3}
+  m_Name: FlowerWeapon
+  m_EditorClassIdentifier: 
+  weaponVisual: {fileID: 403246997971825730, guid: 87091008fc5486a4385cc55a4beae3fd, type: 3}
+  _weaponObjectPoolTag: FlowerWeapon
+  _weaponCooldown: 0.5
+  _currentWeaponCooldown: 0
+  _projectilePrefab: {fileID: 1368470505411515553, guid: 790149d08fa261347a5e8a5e8a7455e2, type: 3}
+  _poolSize: 10
+  _targetTag: PlayerTarget
+  _muzzleFlashPrefab: {fileID: 5487836809483658365, guid: ccf35874ea38a8b4a8452287dab289bf, type: 3}
+  _projectileParent: {fileID: 0}
+  _accuracy: 0.91
+  _weaponSpeed: 80
+  _weaponDamage: 10
+  _weaponRange: 3
+  _magazineSize: 5

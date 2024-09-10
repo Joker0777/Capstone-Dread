@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28963c7c52cf6fc46a5a64379aab515b, type: 3}
+  m_Name: LaserWeapon
+  m_EditorClassIdentifier: 
+  weaponVisual: {fileID: 403246997971825730, guid: 7182cb833c0efe241927c12074e544a0, type: 3}
+  _weaponObjectPoolTag: LaserWeapon
+  _weaponCooldown: 0.2
+  _currentWeaponCooldown: 0
+  _projectilePrefab: {fileID: 1368470505411515553, guid: 609e4857a61b57d4097752e3c010d115, type: 3}
+  _poolSize: 10
+  _targetTag: Enemy
+  _muzzleFlashPrefab: {fileID: 5487836809483658365, guid: ccf35874ea38a8b4a8452287dab289bf, type: 3}
+  _accuracy: 1
+  _weaponSpeed: 300
+  _weaponDamage: 20
+  _weaponRange: 0
+  _magazineSize: 0

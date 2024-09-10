@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60931134d133e144c8a8ffbf0cc54d6a, type: 3}
+  m_Name: BlunderbussBarrel
+  m_EditorClassIdentifier: 
+  modVisual: {fileID: 780264793826229173, guid: b91abe3cd2dde3d4cb6c5a56501c0293, type: 3}
+  modIcon: {fileID: 0}
+  modType: 0
+  damageModifier: 30
+  fireRateModifier: 0
+  accuracyModifier: 0.487
+  magazineSizeModifier: -5
+  rangeModifier: 0
+  speedModifier: 0
