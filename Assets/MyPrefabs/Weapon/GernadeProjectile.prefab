@@ -103,7 +103,7 @@ MonoBehaviour:
   _particleEffectScale: 0.4
   _damageLayer:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 192
   _ignoreLayer: Dead
   _audioClipTag: PlasmaWeaponHitEffect
 --- !u!61 &1096188933126353650

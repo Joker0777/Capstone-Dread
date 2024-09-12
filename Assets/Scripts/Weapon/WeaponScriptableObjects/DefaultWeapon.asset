@@ -19,8 +19,9 @@ MonoBehaviour:
   _projectilePrefab: {fileID: 1368470505411515553, guid: 32fcd6dcebca71b4681658245d365f03, type: 3}
   _poolSize: 10
   _targetTag: Enemy
-  _muzzleFlashPrefab: {fileID: 5487836809483658365, guid: ccf35874ea38a8b4a8452287dab289bf, type: 3}
+  _muzzleFlashPrefab: {fileID: 5509771191616995036, guid: d8eba48287d866e42aaeff8fdc649c88, type: 3}
   _projectileParent: {fileID: 0}
+  _shellCasingTag: DefaultShell
   _accuracy: 1
   _weaponSpeed: 200
   _weaponDamage: 10

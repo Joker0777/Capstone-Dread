@@ -11,6 +11,7 @@ public class ProjectileWeapon : Weapon
     [SerializeField] protected string _targetTag;
     [SerializeField] protected MuzzleFlash _muzzleFlashPrefab;
     [SerializeField] protected Transform _projectileParent;
+    [SerializeField] protected string _shellCasingTag;
 
     //Base Weapon Stats
     [Range(0f, 1f)]
@@ -31,53 +32,60 @@ public class ProjectileWeapon : Weapon
     private int _currentAmmo;
     private float _maxAngle = 45f;
 
-
+    public string ShellCasingTag { get { return _shellCasingTag; } }
+    public int CurrrentAmmo {  get { return _currentAmmo; } }
+    public int CurrentMagazineSize { get { return _currentMagazineSize; } }
 
     public override void InitializeWeapon()
     {
         _currentAmmo = _magazineSize;
-        _currentAccuracy = _accuracy;
-        _currentWeaponSpeed = _weaponSpeed;
-        _currentWeaponDamage = _weaponDamage;
-        _currentWeaponRange = _weaponRange;
-        _currentMagazineSize = _magazineSize;
+        ResetWeapon();
     }
+
+    
 
     public override void UseWeapon(Transform spawn, string targetTag)
     {
-        MuzzleFlash muzzleFlash = ObjectPoolSystem<MuzzleFlash>.Instance.GetObject(_muzzleFlashPrefab._poolTag);
-
-        if (muzzleFlash == null)
+        if(_currentAmmo > 0)
         {
-            ObjectPoolSystem<MuzzleFlash>.Instance.AddPool(_poolSize, _muzzleFlashPrefab._poolTag, _muzzleFlashPrefab, _projectileParent);
-            muzzleFlash = ObjectPoolSystem<MuzzleFlash>.Instance.GetObject(_muzzleFlashPrefab._poolTag);
+            _currentAmmo--;
 
+            MuzzleFlash muzzleFlash = ObjectPoolSystem<MuzzleFlash>.Instance.GetObject(_muzzleFlashPrefab._poolTag);
+
+            if (muzzleFlash == null)
+            {
+                ObjectPoolSystem<MuzzleFlash>.Instance.AddPool(_poolSize, _muzzleFlashPrefab._poolTag, _muzzleFlashPrefab, _projectileParent);
+                muzzleFlash = ObjectPoolSystem<MuzzleFlash>.Instance.GetObject(_muzzleFlashPrefab._poolTag);
+
+            }
+
+            if (muzzleFlash != null)
+            {
+                muzzleFlash.transform.position = spawn.position;
+                muzzleFlash.transform.rotation = spawn.rotation;
+                muzzleFlash.SetBarrelPosition(spawn);
+            }
+
+
+
+            Projectile nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject(_weaponObjectPoolTag);
+
+            if (nextProjectile == null)
+            {
+                ObjectPoolSystem<Projectile>.Instance.AddPool(_poolSize, _weaponObjectPoolTag, _projectilePrefab, _projectileParent);
+                nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject(_weaponObjectPoolTag);
+            }
+
+
+            if (nextProjectile != null)
+            {
+                nextProjectile.transform.position = spawn.position;
+                nextProjectile.transform.rotation = SetTrajectoryAngle(spawn.right, spawn.rotation);
+                nextProjectile.SetupProjectile(_weaponDamage, _weaponSpeed, targetTag);
+            }
         }
+        
 
-        if (muzzleFlash != null)
-        {
-            muzzleFlash.transform.position = spawn.position;
-            muzzleFlash.transform.rotation = spawn.rotation;
-            muzzleFlash.SetBarrelPosition(spawn);
-        }
-
-
-
-        Projectile nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject(_weaponObjectPoolTag);
-
-        if (nextProjectile == null)
-        {
-            ObjectPoolSystem<Projectile>.Instance.AddPool(_poolSize, _weaponObjectPoolTag, _projectilePrefab, _projectileParent);
-            nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject(_weaponObjectPoolTag);
-        }
-
- 
-        if (nextProjectile != null)
-        {
-            nextProjectile.transform.position = spawn.position;
-            nextProjectile.transform.rotation = SetTrajectoryAngle(spawn.right, spawn.rotation);
-            nextProjectile.SetupProjectile(_weaponDamage, _weaponSpeed, targetTag);
-        }
     }
 
 
@@ -88,7 +96,16 @@ public class ProjectileWeapon : Weapon
 
     public void ClearMods()
     {
-        InitializeWeapon();
+        ResetWeapon();
+    }
+
+    public void ResetWeapon()
+    {
+        _currentAccuracy = _accuracy;
+        _currentWeaponSpeed = _weaponSpeed;
+        _currentWeaponDamage = _weaponDamage;
+        _currentWeaponRange = _weaponRange;
+        _currentMagazineSize = _magazineSize;
     }
 
     public void Reload()

@@ -6,5 +6,4 @@ public enum CharacterType
 {
   Player,
   Enemy,
-  Asteroid
 }

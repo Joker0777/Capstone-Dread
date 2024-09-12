@@ -30,6 +30,8 @@ public class EventManager : ScriptableObject
     // Characer
     public Action<CharacterType, Character, Vector3> OnCharacterDestroyed;
     public Action<CharacterType, Character, Vector3> OnCharacterHurt;
+    public Action<string, float> OnWeaponFired;
+    public Action OnWeaponStoped;
    
     public Action<bool> IsFacingRight;
   

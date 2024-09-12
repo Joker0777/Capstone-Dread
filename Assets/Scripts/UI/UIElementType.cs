@@ -6,7 +6,9 @@ public enum UIElementType
 {
     Health,
     PrimaryWeapon,
+    PrimaryWeaponAmmo,
     SecondaryWeapon,
+    SecondaryWeaponAmmo,
     GripMod,
     BarrelMod,
     ScopeMod,

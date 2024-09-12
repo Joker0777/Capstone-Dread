@@ -18,10 +18,12 @@ MonoBehaviour:
   _currentWeaponCooldown: 0
   _projectilePrefab: {fileID: 1368470505411515553, guid: 4fb39e3d7ff55e345bc528bb1264fc09, type: 3}
   _poolSize: 10
-  _targetTag: 
-  _muzzleFlashPrefab: {fileID: 5487836809483658365, guid: ccf35874ea38a8b4a8452287dab289bf, type: 3}
+  _targetTag: Enemy
+  _muzzleFlashPrefab: {fileID: 5509771191616995036, guid: 1cd3c114255f23a43836e41c30fe2de7, type: 3}
+  _projectileParent: {fileID: 0}
+  _shellCasingTag: ShockWaveShell
   _accuracy: 0.529
   _weaponSpeed: 40
   _weaponDamage: 0
   _weaponRange: 0
-  _magazineSize: 0
+  _magazineSize: 1

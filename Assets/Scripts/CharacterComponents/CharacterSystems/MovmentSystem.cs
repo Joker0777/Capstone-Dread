@@ -72,24 +72,46 @@ public class MovmentSystem : CharacterSystems, IMovable
 
         if (_isGrounded)
         {
-            adjustedSpeed = GetCharacterSpeed(); 
-            _lastGroundSpeed = adjustedSpeed; 
+            adjustedSpeed = GetCharacterSpeed();
+            _lastGroundSpeed = adjustedSpeed; // Save ground speed before jumping
         }
         else
         {
-            adjustedSpeed = _lastGroundSpeed;
+            adjustedSpeed = _lastGroundSpeed; // Preserve last known ground speed in the air
         }
 
-        _rigidbody2D.velocity = new Vector2(_horizontal * adjustedSpeed, _rigidbody2D.velocity.y);
+        // Only apply horizontal velocity when grounded or when there's player input while in the air
+        if (_isGrounded || Mathf.Abs(_horizontal) > 0.01f)
+        {
+            _rigidbody2D.velocity = new Vector2(_horizontal * adjustedSpeed, _rigidbody2D.velocity.y);
+        }
     }
 
     private void GroundCheck()
     {
+        bool wasGrounded = _isGrounded;
         _isGrounded = groundCheck.IsGrounded;
+
+
+        if (!wasGrounded && !_isGrounded && !_isJumping)
+        {
+            StartFalling();
+        }
+
+        if (_isGrounded)
+        {
+            _animator.SetBool("isFalling", false);
+        }
+    }
+    private void StartFalling()
+    {
+        _animator.SetBool("isFalling", true);
+        _isJumping = false; 
     }
 
     private void UpdateAnimation()
     {
+        _animator.SetBool("isWalking", IsCharacterWalking());
         _animator.SetBool("isJumping", _isJumping);
         _animator.SetFloat("VelocityY", _rigidbody2D.velocity.y);
         _animator.SetFloat("VelocityX", Mathf.Abs(_horizontal * GetCharacterSpeed()));
@@ -97,11 +119,15 @@ public class MovmentSystem : CharacterSystems, IMovable
         _animator.SetBool("isRunning", IsCharacterRunning());
         _animator.SetBool("isGrounded", _isGrounded);
         _animator.SetBool("isWalkingBackwards", IsWalkingBackWards());
+        _animator.SetFloat("PlayerInput", Mathf.Abs(_horizontal));
+      //  _animator.SetBool("isFalling", !_isGrounded && !_isJumping);
+
+
     }
 
     private bool IsCharacterRunning()
     {
-        if (_isRunning && _isGrounded) 
+        if (_isRunning && _isGrounded)
         {
             if ((_isFacingRight && _horizontal > 0) || (!charcterAim.IsFacingRight && _horizontal < 0))
             {
@@ -120,9 +146,21 @@ public class MovmentSystem : CharacterSystems, IMovable
         return false;
     }
 
+    private bool IsCharacterWalking()
+    {
+        if (_isGrounded && !_isRunning && _isCrouching)
+        {
+            if ((_isFacingRight && _horizontal > 0) || (!charcterAim.IsFacingRight && _horizontal < 0))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private float GetCharacterSpeed()
     {
-        if (_isRunning && _isGrounded) 
+        if (_isRunning && _isGrounded)
         {
             if ((_isFacingRight && _horizontal > 0) || (!charcterAim.IsFacingRight && _horizontal < 0))
             {
@@ -140,6 +178,9 @@ public class MovmentSystem : CharacterSystems, IMovable
         else if (IsWalkingBackWards() && _isCrouching)
         {
             return 0f;
+        }else if(_isRunning && !_isGrounded)
+        {
+            return _speed * _runSpeedMultiplier;
         }
 
         return _speed;
@@ -164,6 +205,7 @@ public class MovmentSystem : CharacterSystems, IMovable
     {
         if (_isGrounded && !_isJumping && !_isCrouching)
         {
+            _lastGroundSpeed = _horizontal * _speed; // Store horizontal velocity when jumping
             StartCoroutine(JumpRoutine());
         }
     }

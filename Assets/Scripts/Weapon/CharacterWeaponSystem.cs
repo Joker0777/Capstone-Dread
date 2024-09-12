@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class CharacterWeaponSystem : CharacterSystems
 {
+    [SerializeField] protected Animator _animator;
+     
     [SerializeField] protected List<ProjectileWeapon> _primaryWeaponList = new List<ProjectileWeapon>();
     [SerializeField] protected List<ProjectileWeapon> _secondaryWeaponList = new List<ProjectileWeapon>();
 
@@ -51,6 +53,11 @@ public class CharacterWeaponSystem : CharacterSystems
     protected float _fireRateIncreaseFactor = 1f;
 
     [SerializeField] protected GameObject[] _weaponVisuals;
+    [SerializeField] protected GameObject _weaponProjectileParent;
+
+    private bool _isReloading = false;
+    [SerializeField] protected GunPositonAdjust _gunPositonAdjust;
+
 
     public float WeaponCooldown
     {
@@ -81,7 +88,11 @@ public class CharacterWeaponSystem : CharacterSystems
 
         _primaryCooldownTimer = new Timer(_currentPrimaryWeaponCooldown);
         _secondaryCooldownTimer = new Timer(_currentSecondaryWeaponCooldown);
- 
+        _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeapon, "None");
+        _eventManager.OnUIChange?.Invoke(UIElementType.BarrelMod, "0");
+        _eventManager.OnUIChange?.Invoke(UIElementType.ScopeMod, "0");
+        _eventManager.OnUIChange?.Invoke(UIElementType.GripMod, "0");
+
         InitializeWeaponLists();
     }
 
@@ -92,12 +103,16 @@ public class CharacterWeaponSystem : CharacterSystems
             _currentPrimaryWeapon = _primaryWeaponList[_currentWeaponIndex];
             _currentPrimaryWeaponVisual = Instantiate(_currentPrimaryWeapon.WeaponVisual, _weaponVisualTransform.position, _weaponVisualTransform.rotation, _weaponVisualTransform);
             _currentPrimaryWeaponVisual.transform.localPosition = Vector3.zero;
+            _currentPrimaryWeapon.InitializeWeapon();
         }
 
         if (_secondaryWeaponList.Count > 0)
         {
             _currentSecondaryWeapon = _secondaryWeaponList[_currentSecondaryWeaponIndex];
         }
+
+        _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeapon, _currentPrimaryWeapon.name);
+        _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeaponAmmo, _currentPrimaryWeapon.CurrrentAmmo.ToString() + "/" + _currentPrimaryWeapon.CurrentMagazineSize.ToString());
     }
 
 
@@ -107,33 +122,26 @@ public class CharacterWeaponSystem : CharacterSystems
         if (addedWeapon != null && !weaponList.Contains(addedWeapon))
         {
             weaponList.Add(addedWeapon);
-            currentWeapon = addedWeapon;
+
             if(weaponList.Count == 1)
             {
+                currentWeapon = addedWeapon;
                 currentVisuals = Instantiate(currentWeapon.WeaponVisual, _weaponVisualTransform.position, _weaponVisualTransform.rotation, _weaponVisualTransform);
                 currentVisuals.transform.localPosition = Vector3.zero;
             }
-
-  
-
-          //  foreach (var weapon in _weaponVisuals)
-         //   {
-            //    if (weapon != null && addedWeapon.WeaponType == weapon.name)
-            //    {
-             //       weapon.SetActive(true);
-              //  }
-          //  }
         }
     }
 
     public void AddPrimaryWeapon(ProjectileWeapon addedWeapon)
     {
         AddWeapon(addedWeapon, _primaryWeaponList, ref _currentPrimaryWeapon, ref _currentPrimaryWeaponVisual);
+       addedWeapon.InitializeWeapon();
     }
 
     public void AddSecondaryWeapon(ProjectileWeapon addedWeapon)
     {
         AddWeapon(addedWeapon, _secondaryWeaponList, ref _currentSecondaryWeapon, ref _currentSecondaryWeaponVisual);
+        addedWeapon.InitializeWeapon();
     }
 
 
@@ -155,6 +163,7 @@ public class CharacterWeaponSystem : CharacterSystems
                         _currentBarrelMod = _barrelModsList[0];
                         
                     }
+                    _eventManager.OnUIChange?.Invoke(UIElementType.BarrelMod, _barrelModsList.Count.ToString());
                 }
 
                 break;
@@ -167,6 +176,7 @@ public class CharacterWeaponSystem : CharacterSystems
                     {
                         _currentSightMod = _sightModsList[0];
                     }
+                    _eventManager.OnUIChange?.Invoke(UIElementType.ScopeMod, _sightModsList.Count.ToString());
                 }
 
                 break;
@@ -179,6 +189,7 @@ public class CharacterWeaponSystem : CharacterSystems
                     {
                         _currentGripMod = _gripModsList[0];
                     }
+                    _eventManager.OnUIChange?.Invoke(UIElementType.GripMod, _gripModsList.Count.ToString());
                 }
 
                 break;
@@ -200,6 +211,7 @@ public class CharacterWeaponSystem : CharacterSystems
             }
             _currentGripVisual = Instantiate(_currentGripMod.ModVisual, _weaponVisualTransform.position, _weaponVisualTransform.rotation, _weaponVisualTransform);
             _currentGripVisual.transform.localPosition = Vector3.zero;
+            _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeaponAmmo, _currentPrimaryWeapon.CurrrentAmmo.ToString() + "/" + _currentPrimaryWeapon.CurrentMagazineSize.ToString());
         }
 
         if (_currentBarrelMod != null)
@@ -233,14 +245,19 @@ public class CharacterWeaponSystem : CharacterSystems
 
     public void FirePrimaryWeapon()
     {
-        if (_primaryCooldownTimer.IsRunningCoroutine) return;
+        if (_isReloading || _primaryCooldownTimer.IsRunningCoroutine || _currentPrimaryWeapon.CurrrentAmmo <= 0) return;
 
         FireWeaponLogic(_currentPrimaryWeapon, ref _primaryWeaponSpawnPointIndex, _primaryCooldownTimer);
     }
 
+    public void StopPrimaryWeapon()
+    {
+        _eventManager.OnWeaponStoped?.Invoke();
+    }
+
     public void FireSecondaryWeapon()
     {
-        if (_secondaryCooldownTimer.IsRunningCoroutine) return;
+        if (_secondaryCooldownTimer.IsRunningCoroutine || _currentSecondaryWeapon.CurrrentAmmo <=0) return;
 
         FireWeaponLogic(_currentSecondaryWeapon, _secondaryWeaponSpawnPoint, _secondaryCooldownTimer);
     }
@@ -272,6 +289,8 @@ public class CharacterWeaponSystem : CharacterSystems
 
         weapon.UseWeapon(weaponSpawn, _weaponTarget);
         _eventManager.OnPlaySoundEffect?.Invoke(weapon.name + "Effect", weaponSpawn.position);
+        _eventManager.OnWeaponFired?.Invoke(_currentPrimaryWeapon.ShellCasingTag, _currentPrimaryWeaponCooldown);
+        _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeaponAmmo, _currentPrimaryWeapon.CurrrentAmmo.ToString() + "/" + _currentPrimaryWeapon.CurrentMagazineSize.ToString());
 
         cooldownTimer.StartTimerCoroutine();
     }
@@ -288,8 +307,8 @@ public class CharacterWeaponSystem : CharacterSystems
 
         weapon.UseWeapon(weaponSpawnPoint, _weaponTarget);
         cooldownTimer.StartTimerCoroutine();
+        _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeaponAmmo, _currentSecondaryWeapon.CurrrentAmmo.ToString() + "/" + _currentSecondaryWeapon.CurrentMagazineSize.ToString());
     }
-
 
 
     protected void SetUpWeapon(string weaponType)
@@ -307,24 +326,18 @@ public class CharacterWeaponSystem : CharacterSystems
     }
 
 
-
-
-
     public void SwitchWeapon(int switchDirection, List<ProjectileWeapon> weaponList, ref ProjectileWeapon currentWeapon, ref int currentIndex)
     {
         if (weaponList.Count == 0) return;
 
         currentIndex = (currentIndex + switchDirection + weaponList.Count) % weaponList.Count;
         currentWeapon = weaponList[currentIndex];
-        currentWeapon.InitializeWeapon();
-        
-
-
-
     }
 
     public void SwitchPrimaryWeapon(int switchDirection)
     {
+        if (_primaryWeaponList.Count == 0) return;
+
         SwitchWeapon(switchDirection, _primaryWeaponList, ref _currentPrimaryWeapon, ref _currentWeaponIndex);
         if (_currentPrimaryWeaponVisual != null)
         {
@@ -334,10 +347,13 @@ public class CharacterWeaponSystem : CharacterSystems
         _currentPrimaryWeaponVisual.transform.localPosition = Vector3.zero;
         UpdateWeaponMods();
         _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeapon, _currentPrimaryWeapon.name);
+        _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeaponAmmo, _currentPrimaryWeapon.CurrrentAmmo.ToString() + "/" + _currentPrimaryWeapon.CurrentMagazineSize.ToString());
     }
 
     public void SwitchSecondaryWeapon(int switchDirection)
     {
+        if (_secondaryWeaponList.Count == 0)  return; 
+
         SwitchWeapon(switchDirection, _secondaryWeaponList, ref _currentSecondaryWeapon, ref _currentSecondaryWeaponIndex);
         if (_currentSecondaryWeaponVisual != null)
         {
@@ -346,103 +362,70 @@ public class CharacterWeaponSystem : CharacterSystems
         _currentSecondaryWeaponVisual = Instantiate(_currentSecondaryWeapon.WeaponVisual, _weaponVisualTransform.position, _weaponVisualTransform.rotation, _weaponVisualTransform);
         _currentSecondaryWeaponVisual.transform.localPosition = Vector3.zero;
         _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeapon, _currentSecondaryWeapon.name);
+        _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeaponAmmo, _currentSecondaryWeapon.CurrrentAmmo.ToString() + "/" + _currentSecondaryWeapon.CurrentMagazineSize.ToString());
     }
 
-    /*
-
-
-
-    public void AddMod(WeaponMod weaponMod, ModType modType)
+    public void ReloadPrimaryWeapon()
     {
-        if (weaponMod == null) return;
-
-        switch (modType)
+        if (_currentPrimaryWeapon.CurrrentAmmo < _currentPrimaryWeapon.CurrentMagazineSize)
         {
-            case ModType.Barrel:
-                _barrelMods.Add(weaponMod);
-                break;
-
-            case ModType.Ammo:
-                _ammoMods.Add((AmmoMod)weaponMod);
-                break;
-
-            case ModType.Secondary:
-                _ammoMods.Add((AmmoMod)weaponMod);
-                break;
-
-            case ModType.Sight:
-                _sightMods.Add(weaponMod);
-                break;
-
-            case ModType.Grip:
-                _gripMods.Add(weaponMod);
-                break;
+            _animator.SetTrigger("Reload");
+            StartCoroutine(HandleReload(_currentPrimaryWeapon));
         }
+
     }
 
-
-    public void SwitchAmmo(int switchDirection)
+    private IEnumerator HandleReload(ProjectileWeapon weapon)
     {
-        if (_ammoMods.Count == 0) return;
+        _isReloading = true;  
+        Vector3 currentGunOffset = _gunPositonAdjust.gunOffset;
+        Vector3 targetGunOffset = Vector3.zero; 
 
-        _currentAmmoIndex = (switchDirection > 0) ? (_currentAmmoIndex + 1) % _ammoMods.Count : (_currentAmmoIndex - 1 + _ammoMods.Count) % _ammoMods.Count;
-        AmmoMod newAmmo = _ammoMods[_currentAmmoIndex];
+  
+        float transitionDuration = 0.5f;
+        float elapsedTime = 0f;
+        Vector3 startOffset = currentGunOffset;
 
-        if (_currentAmmo != newAmmo)
+        while (elapsedTime < transitionDuration)
         {
-            _primaryWeapon.ChangeAmmo(_currentAmmo, newAmmo);
-            _currentAmmo = newAmmo;
+            float t = elapsedTime / transitionDuration;
+            _gunPositonAdjust.gunOffset = Vector3.Lerp(startOffset, targetGunOffset, t);
+            elapsedTime += Time.deltaTime;
+            yield return null; // Wait for the next frame
         }
 
-      //  _eventManager.OnUIChange?.Invoke(UIElementType.Weapon, _currentWeapon.name);
+        // Ensure the gun offset is exactly zero
+        _gunPositonAdjust.gunOffset = targetGunOffset;
+
+        // Get the duration of the reload animation
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        float reloadDuration = stateInfo.length;
+
+        // Wait for the duration of the reload animation
+        yield return new WaitForSeconds(reloadDuration);
+
+        // Perform the reload action on the weapon
+        weapon.Reload();
+
+        // Smoothly transition the gun offset back to the original value
+        elapsedTime = 0f;
+        startOffset = Vector3.zero; // Start from zero after reload
+
+        while (elapsedTime < transitionDuration)
+        {
+            float t = elapsedTime / transitionDuration;
+            _gunPositonAdjust.gunOffset = Vector3.Lerp(startOffset, currentGunOffset, t);
+            elapsedTime += Time.deltaTime;
+            yield return null; // Wait for the next frame
+        }
+
+        // Ensure the gun offset is exactly at the original position
+        _gunPositonAdjust.gunOffset = currentGunOffset;
+
+        _isReloading = false;  // Re-enable firing after reloading
+
+        // Update UI with new ammo count
+        _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeaponAmmo,
+            weapon.CurrrentAmmo.ToString() + "/" + weapon.CurrentMagazineSize.ToString());
     }
-
-
-
-    public void SwitchWeaponMod(WeaponMod newWeaponMod) 
-    {
-        if (_primaryWeapon == null)
-        {
-            Debug.LogWarning("Primary weapon is not set.");
-            return;
-        }
-
-        switch (newWeaponMod.ModType)
-        {
-            case ModType.Barrel:
-                if (_currentBarrelMod != null)
-                {
-                    _currentBarrelMod.RemoveMod(_primaryWeapon);
-                }
-                _currentBarrelMod = newWeaponMod;
-                _currentBarrelMod.AddMod(_primaryWeapon);
-              //  UpdateModVisuals();
-                break;
-
-            case ModType.Sight:
-                if (_currentSightMod != null)
-                {
-                    _currentSightMod.RemoveMod(_primaryWeapon);
-                }
-                _currentSightMod = newWeaponMod;
-                _currentSightMod.AddMod(_primaryWeapon);
-               // UpdateModVisuals();
-                break;
-
-            case ModType.Grip:
-                if (_currentGripMod != null)
-                {
-                    _currentGripMod.RemoveMod(_primaryWeapon);
-                }
-                _currentGripMod = newWeaponMod;
-                _currentGripMod.AddMod(_primaryWeapon);
-               // UpdateModVisuals();
-                break;
-
-            default:
-                Debug.LogWarning($"Unsupported mod type: {newWeaponMod.ModType}");
-                break;
-        }
-    }
-    */
 }

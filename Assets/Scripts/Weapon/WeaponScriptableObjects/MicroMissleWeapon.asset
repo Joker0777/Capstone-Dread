@@ -18,10 +18,12 @@ MonoBehaviour:
   _currentWeaponCooldown: 0
   _projectilePrefab: {fileID: 1368470505411515553, guid: 13246da632b8bd049a8cb5446e0457a9, type: 3}
   _poolSize: 10
-  _targetTag: 
-  _muzzleFlashPrefab: {fileID: 5487836809483658365, guid: ccf35874ea38a8b4a8452287dab289bf, type: 3}
+  _targetTag: Enemy
+  _muzzleFlashPrefab: {fileID: 5509771191616995036, guid: 3ef197ce13e45024a97480949e836161, type: 3}
+  _projectileParent: {fileID: 0}
+  _shellCasingTag: MissleShell
   _accuracy: 0.945
   _weaponSpeed: 120
   _weaponDamage: 0
   _weaponRange: 0
-  _magazineSize: 0
+  _magazineSize: 6

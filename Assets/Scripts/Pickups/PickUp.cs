@@ -40,7 +40,7 @@ public class PickUp : MonoBehaviour
     {
         if(collision == null) return;
 
-        Character character = collision.GetComponentInParent<Character>();
+        PlayerCharacter character = collision.GetComponentInParent<PlayerCharacter>();
       //  Debug.Log(character);
         if (character != null && character.CompareTag(unitTag))
         {

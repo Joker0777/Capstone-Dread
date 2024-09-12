@@ -15,9 +15,9 @@ MonoBehaviour:
   modVisual: {fileID: 4905377840651962499, guid: 66733db4ef5b9bc4ea8fd652ff5bbe8e, type: 3}
   modIcon: {fileID: 21300000, guid: e1cfe4019be1b1648969f6ed6db48e08, type: 3}
   modType: 2
-  damageModifier: 50
+  damageModifier: 0
   fireRateModifier: 0
   accuracyModifier: 0
-  magazineSizeModifier: 10
+  magazineSizeModifier: 20
   rangeModifier: 0
   speedModifier: 0

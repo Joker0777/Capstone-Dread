@@ -58,10 +58,14 @@ public class InputSystem : CharacterSystems
         }
 
         //Primary Weapon
-         if (Input.GetMouseButton(0))
-          {
+        if (Input.GetMouseButton(0))
+        {
             weapon?.FirePrimaryWeapon();
-          }
+        }
+        else if (Input.GetMouseButtonUp(0)) 
+        {
+            weapon?.StopPrimaryWeapon();
+        }
 
         //Secondary Weapon
         if (Input.GetMouseButtonDown(1))
@@ -70,14 +74,26 @@ public class InputSystem : CharacterSystems
         }
 
         //Change Primary Weapon
-        if (_scrolledInput > 0 || Input.GetKeyDown(KeyCode.E))
+        if (_scrolledInput > 0 || Input.GetKeyDown(KeyCode.Q))
         {
             weapon?.SwitchPrimaryWeapon(1);
         }
 
-        if (_scrolledInput < 0 || Input.GetKeyDown(KeyCode.Q))
+        if (_scrolledInput < 0)
         {
             weapon?.SwitchPrimaryWeapon(-1);
+        }
+
+        //Change Secondary Weapon
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            weapon?.SwitchSecondaryWeapon(1);
+        }
+
+        //Reload Weapon
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            weapon?.ReloadPrimaryWeapon();
         }
     }
 }

@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e24b9fa7887895a408cc6780f71a1387, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 51acc89f61cf83546961559343bf4b6c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pickupType: 0
-  unitTag: Player
+  unitTag: PlayerTarget
   _pickupTimerLength: 500
   mod: {fileID: 0}
   weapon: {fileID: 11400000, guid: edef0af4a2d27f34faaf5e2e8acbea6a, type: 2}

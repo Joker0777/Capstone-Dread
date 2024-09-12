@@ -38,6 +38,8 @@ public class Character : MonoBehaviour, IDamagable
         _healthSystem = new HealthSystem();
         _healthSystem.CurrentHealth = _maxHealth;
         _healthSystem.MaxHealth = _maxHealth;
+
+
     }
 
     protected void Update()

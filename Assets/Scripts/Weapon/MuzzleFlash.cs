@@ -6,12 +6,11 @@ public class MuzzleFlash : MonoBehaviour
 {
     private Animator _animator;
     public string _poolTag;
-    public string _animationTag;
     private Transform _gunBarrelPosition;
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
+        _animator = GetComponentInChildren<Animator>();
     }
     private void LateUpdate()
     {
@@ -36,7 +35,7 @@ public class MuzzleFlash : MonoBehaviour
     {
         if (_animator != null)
         {
-            _animator.Play(_animationTag); 
+            _animator.Play(_poolTag); 
             StartCoroutine(DeactivateAfterAnimation());
         }
         else

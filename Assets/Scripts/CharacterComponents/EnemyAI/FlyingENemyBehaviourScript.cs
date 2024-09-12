@@ -131,7 +131,7 @@ public class FlyingENemyBehaviourScript : CharacterSystems
             stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         }
 
-        // Destroy(gameObject,4);
+         Destroy(gameObject,4);
     }
 
     protected bool InRangeOfTarget(float range, GameObject target)

@@ -19,9 +19,11 @@ MonoBehaviour:
   _projectilePrefab: {fileID: 1368470505411515553, guid: 69b88e8f6668de44d9b9f8a2bb0a69ed, type: 3}
   _poolSize: 10
   _targetTag: Enemy
-  _muzzleFlashPrefab: {fileID: 5487836809483658365, guid: ccf35874ea38a8b4a8452287dab289bf, type: 3}
+  _muzzleFlashPrefab: {fileID: 5509771191616995036, guid: ce8ab1861b70f9841abe08808ce64e83, type: 3}
+  _projectileParent: {fileID: 0}
+  _shellCasingTag: GernadeShell
   _accuracy: 0.64
   _weaponSpeed: 40
   _weaponDamage: 75
   _weaponRange: 0
-  _magazineSize: 0
+  _magazineSize: 5

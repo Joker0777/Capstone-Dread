@@ -9,11 +9,11 @@ public class PickUpManager : MonoBehaviour
     public static PickUpManager instance;
 
     //[SerializeField] private PickupSpawner _pickupSpawner;
-    [SerializeField] private Character _playerCharacter;
+    [SerializeField] private PlayerCharacter _playerCharacter;
    // [SerializeField] private ScoreManager _scoreManager;
 
     //powerUp pickups
-    private PowerUpPickUp _currentPowerUpPickUp;
+   // private PowerUpPickUp _currentPowerUpPickUp;
 
     //powerup timer
     [SerializeField] protected float _powerUpTimerLength = 10;
@@ -78,7 +78,7 @@ public class PickUpManager : MonoBehaviour
             if (!_PowerUpTimer.IsRunningBasic())
             {
                 _powerUpTimerRunning = false;
-                _currentPowerUpPickUp.DeactivatePowerUp(_playerCharacter);
+               // _currentPowerUpPickUp.DeactivatePowerUp(_playerCharacter);
               //  _eventManager.OnUIChange?.Invoke(UIElementType.PickUpTimer, "0");
               //  _eventManager.OnUIChange?.Invoke(UIElementType.pickUp, "EmptyPowerUp");
             }
@@ -88,7 +88,7 @@ public class PickUpManager : MonoBehaviour
 
     
 
-    public void CollectPickup(Character character, PickUp pickup, WeaponMod mod = null, ProjectileWeapon weapon = null, int healthAmount = 10)
+    public void CollectPickup(PlayerCharacter character, PickUp pickup, WeaponMod mod = null, ProjectileWeapon weapon = null, int healthAmount = 10)
     {
         _playerCharacter = character;
 
@@ -150,25 +150,7 @@ public class PickUpManager : MonoBehaviour
     
     
     
-    private void CollectPowerUp(PowerUpPickUp powerUpPickUp)
-    {
-        if (powerUpPickUp == null) return;
 
-        if (_powerUpTimerRunning)
-        {
-            _currentPowerUpPickUp?.DeactivatePowerUp(_playerCharacter);
-            _PowerUpTimer.StopTimerBasic();
-            _powerUpTimerRunning = false;
-        }
-             
-        _currentPowerUpPickUp = powerUpPickUp;
-        _currentPowerUpPickUp.ActivatePowerUp(_playerCharacter);
-
-        
-        _PowerUpTimer.StartTimerBasic();
-        _powerUpTimerRunning = true;
-        _eventManager.OnPlaySoundEffect?.Invoke("PowerUpEffect", transform.position);
-    }
 
     public void DestoyAllPickUps()
     {
@@ -187,7 +169,7 @@ public class PickUpManager : MonoBehaviour
        // }
     }
 
-    private void ResetPlayer(Character character)
+    private void ResetPlayer(PlayerCharacter character)
     {
         _playerCharacter = character;
 
