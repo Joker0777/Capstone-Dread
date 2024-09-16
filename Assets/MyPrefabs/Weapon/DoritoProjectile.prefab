@@ -51,9 +51,10 @@ MonoBehaviour:
   _particleEffectScale: 0.4
   _damageLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 2056
   _ignoreLayer: Dead
-  _audioClipTag: DoritoWeaponSound
+  _audioClipTag: DoritoWeaponHitEffect
+  _projectilePoolTag: DoritoWeapon
 --- !u!61 &1096188933126353650
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -124,7 +125,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!1 &3689598348783154387
 GameObject:

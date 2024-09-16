@@ -8,6 +8,9 @@ TagManager:
   - Ground
   - Dead
   - PlayerTarget
+  - GunSight
+  - AimTarget
+  - ProjectileParent
   layers:
   - Default
   - TransparentFX

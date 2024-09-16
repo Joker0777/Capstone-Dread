@@ -14,17 +14,21 @@ public class EnemyBehaviourSystem : CharacterSystems
     private Vector2 moveDirection;
 
     [SerializeField] private float moveSpeed = 2f;
+
     [SerializeField] private float detectRange = 10f;
     [SerializeField] private float attackRange = 7f;
-    [SerializeField] private float stopRange = 5f;  
-    [SerializeField] private float backoffRange = 2f;  
+    [SerializeField] private float stopRange = 5f;
+    [SerializeField] private float backoffRange = 2f;
 
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private Transform groundCheck;
+    [SerializeField] private Transform frontCheck;
     [SerializeField] private float groundCheckRadius = 0.2f;
+    [SerializeField] private float frontCheckDistance = 1f;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private WeaponSystem weapon;
+    [SerializeField] private RangedEnemyWeaponSystem weapon;
     [SerializeField] private Animator[] animators;
+    [SerializeField] private string _detectSoundEffect;
 
     private bool isGrounded;
 
@@ -40,7 +44,7 @@ public class EnemyBehaviourSystem : CharacterSystems
 
         if (weapon == null)
         {
-            weapon = GetComponentInChildren<WeaponSystem>();
+            weapon = GetComponentInChildren<RangedEnemyWeaponSystem>();
             if (weapon == null)
             {
                 Debug.LogWarning("Weapon system not assigned or found in children.");
@@ -68,7 +72,6 @@ public class EnemyBehaviourSystem : CharacterSystems
 
     private void SetHurtState(CharacterType type, Character enemyCharacter, Vector3 vector)
     {
-
         if (type == CharacterType.Enemy && character == enemyCharacter && currentState != EnemyState.IsDead)
         {
             previousState = currentState;
@@ -78,12 +81,11 @@ public class EnemyBehaviourSystem : CharacterSystems
 
     private void SetDeathState(CharacterType type, Character enemyCharacter, Vector3 vector)
     {
-        if(type == CharacterType.Enemy && character == enemyCharacter)
+        if (type == CharacterType.Enemy && character == enemyCharacter)
         {
             currentState = EnemyState.IsDead;
         }
     }
-
 
     private void GroundCheck()
     {
@@ -117,11 +119,9 @@ public class EnemyBehaviourSystem : CharacterSystems
 
     private void CharacterHurt()
     {
-
         foreach (var animator in animators)
         {
             StartCoroutine(PlayDeathAnimationAndDestroy(animator, "isHurt", "Hurt"));
-
         }
         rb.velocity = Vector3.zero;
         currentState = previousState;
@@ -129,11 +129,10 @@ public class EnemyBehaviourSystem : CharacterSystems
 
     private void CharacterDeath()
     {
-        this.enabled = false;
+
         rb.gravityScale = 0;
         rb.velocity = Vector3.zero;
         collider.enabled = false;
-
 
         foreach (var animator in animators)
         {
@@ -149,12 +148,11 @@ public class EnemyBehaviourSystem : CharacterSystems
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         while (stateInfo.IsName(animation) && stateInfo.normalizedTime < 1.0f)
         {
-
             yield return null;
             stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         }
 
-        // Destroy(gameObject,4);
+         Destroy(gameObject,10);
     }
 
     protected bool InRangeOfTarget(float range, GameObject target)
@@ -169,6 +167,7 @@ public class EnemyBehaviourSystem : CharacterSystems
         if (InRangeOfTarget(detectRange, target))
         {
             currentState = EnemyState.DetectTarget;
+            _eventManager.OnPlaySoundEffect?.Invoke(_detectSoundEffect, transform.position);
         }
     }
 
@@ -189,7 +188,7 @@ public class EnemyBehaviourSystem : CharacterSystems
         }
     }
 
-    private void AttackTarget()//added blend tree stuff
+    private void AttackTarget()
     {
         if (target != null)
         {
@@ -212,7 +211,6 @@ public class EnemyBehaviourSystem : CharacterSystems
             else if (distance <= stopRange)
             {
                 rb.velocity = new Vector2(0, rb.velocity.y); // Stop movement
-                FireWeapon(); // Attack
             }
             else
             {
@@ -268,6 +266,15 @@ public class EnemyBehaviourSystem : CharacterSystems
         {
             float distanceToTarget = target.transform.position.x - transform.position.x;
             moveDirection = new Vector2(Mathf.Sign(distanceToTarget), 0);
+
+            // Check for obstacles ahead
+            bool obstacleAhead = Physics2D.Raycast(frontCheck.position, Vector2.right, frontCheckDistance, groundLayer);
+            if (obstacleAhead)
+            {
+                rb.velocity = Vector2.zero; // Stop movement if an obstacle is detected
+                return; // Exit the method to prevent movement
+            }
+
             rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
 
             // Flip enemy sprite based on direction (only when moving towards target)
@@ -282,6 +289,15 @@ public class EnemyBehaviourSystem : CharacterSystems
     {
         foreach (var animator in animators)
         {
+            float movementType = 0.5f; // Default to walking
+
+            if (currentState == EnemyState.Backoff)
+            {
+                movementType = 0.5f; // Walking backwards
+            }
+
+            animator.SetFloat("MovementType", movementType);
+
             if (currentState == EnemyState.Patrol)
             {
                 animator.SetBool("isWalking", false);
@@ -302,15 +318,15 @@ public class EnemyBehaviourSystem : CharacterSystems
             }
             else if (currentState == EnemyState.Backoff)
             {
-                animator.SetBool("isWalkingBackwards", true); 
+                animator.SetBool("isWalkingBackwards", true);
                 animator.SetBool("isAttacking", false);
-                animator.SetBool("isWalking", false) ;
+                animator.SetBool("isWalking", false);
             }
         }
     }
 
     public void FireWeapon()
     {
-        weapon?.UsePrimaryWeapon();
+        weapon?.FirePrimaryWeapon();
     }
 }

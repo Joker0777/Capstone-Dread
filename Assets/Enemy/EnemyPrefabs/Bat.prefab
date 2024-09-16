@@ -52,8 +52,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  moveSpeed: 1
-  detectRange: 8
+  moveSpeed: 3
+  detectRange: 30
   attackRange: 0.5
   stopRange: 0.5
   backoffRange: 0
@@ -64,6 +64,7 @@ MonoBehaviour:
   animators:
   - {fileID: 756405915834574480}
   - {fileID: 1736802368137887042}
+  _detectSoundEffect: BatOnAttackEffect
   currentState: 0
   previousState: 0
 --- !u!114 &9200924442363453718
@@ -84,6 +85,7 @@ MonoBehaviour:
   - spawnLocations:
     - {fileID: 9136290906672775898}
     weaponTypeTag: BatWeapon
+  _weaponProjectileParentTag: ProjectileParent
   _weaponTarget: PlayerTarget
 --- !u!61 &4010294576298122411
 BoxCollider2D:
@@ -170,10 +172,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterType: 1
-  _maxHealth: 50
+  _maxHealth: 25
   __impactDamage: 0
-  _particleEffectTag: 
-  _soundEffectTag: 
+  _particleEffectTag: EnemyDestroyedBat
+  _deathSoundEffectTag: BatDeathEffect
+  _hurtSoundEffectTag: BatHurtEffect
   _collisionIgnore: Enemy
   _deadLayer: Dead
   _animator: {fileID: 756405915834574480}

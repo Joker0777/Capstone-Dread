@@ -15,13 +15,15 @@ MonoBehaviour:
   weaponVisual: {fileID: 403246997971825730, guid: 87091008fc5486a4385cc55a4beae3fd, type: 3}
   _weaponObjectPoolTag: DoritoWeapon
   _weaponCooldown: 0.8
-  _currentWeaponCooldown: 0
+  _currentWeaponCooldown: 1
   _projectilePrefab: {fileID: 1368470505411515553, guid: 8935ca848c654da4d91b7deb3ebf0f75, type: 3}
   _poolSize: 10
   _targetTag: Enemy
-  _muzzleFlashPrefab: {fileID: 5487836809483658365, guid: ccf35874ea38a8b4a8452287dab289bf, type: 3}
-  _accuracy: 0.953
+  _muzzleFlashPrefab: {fileID: 5509771191616995036, guid: e71fd506c79374843b60a246b9451fce, type: 3}
+  _projectileParent: {fileID: 0}
+  _shellCasingTag: DefaultShell
+  _accuracy: 0.85
   _weaponSpeed: 50
-  _weaponDamage: 10
+  _weaponDamage: 15
   _weaponRange: 5
-  _magazineSize: 6
+  _magazineSize: 50

@@ -53,7 +53,7 @@ public class CharacterWeaponSystem : CharacterSystems
     protected float _fireRateIncreaseFactor = 1f;
 
     [SerializeField] protected GameObject[] _weaponVisuals;
-    [SerializeField] protected GameObject _weaponProjectileParent;
+
 
     private bool _isReloading = false;
     [SerializeField] protected GunPositonAdjust _gunPositonAdjust;
@@ -95,6 +95,20 @@ public class CharacterWeaponSystem : CharacterSystems
 
         InitializeWeaponLists();
     }
+    private void OnEnable()
+    {
+        _eventManager.OnCharacterDestroyed += OnCharacterDie;
+    }
+
+    private void OnDisable()
+    {
+        _eventManager.OnCharacterDestroyed -= OnCharacterDie;
+    }
+
+    private void OnCharacterDie(CharacterType characterType, Character character, Vector3 position)
+    {
+        this.enabled = false;
+    }
 
     private void InitializeWeaponLists()
     {
@@ -127,7 +141,8 @@ public class CharacterWeaponSystem : CharacterSystems
             {
                 currentWeapon = addedWeapon;
                 currentVisuals = Instantiate(currentWeapon.WeaponVisual, _weaponVisualTransform.position, _weaponVisualTransform.rotation, _weaponVisualTransform);
-                currentVisuals.transform.localPosition = Vector3.zero;
+                currentVisuals.transform.localPosition = Vector3.zero; 
+
             }
         }
     }
@@ -142,6 +157,11 @@ public class CharacterWeaponSystem : CharacterSystems
     {
         AddWeapon(addedWeapon, _secondaryWeaponList, ref _currentSecondaryWeapon, ref _currentSecondaryWeaponVisual);
         addedWeapon.InitializeWeapon();
+        if (_secondaryWeaponList.Count == 1)
+        {
+            _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeapon, _currentSecondaryWeapon.name);
+            _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeaponAmmo, _currentSecondaryWeapon.CurrrentAmmo.ToString() + "/" + _currentSecondaryWeapon.CurrentMagazineSize.ToString());
+        }
     }
 
 
@@ -306,6 +326,7 @@ public class CharacterWeaponSystem : CharacterSystems
         SetUpWeapon(weapon.WeaponType);
 
         weapon.UseWeapon(weaponSpawnPoint, _weaponTarget);
+        _eventManager.OnPlaySoundEffect?.Invoke(weapon.name + "Effect", weaponSpawnPoint.position);
         cooldownTimer.StartTimerCoroutine();
         _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeaponAmmo, _currentSecondaryWeapon.CurrrentAmmo.ToString() + "/" + _currentSecondaryWeapon.CurrentMagazineSize.ToString());
     }
@@ -323,6 +344,20 @@ public class CharacterWeaponSystem : CharacterSystems
             }
         }
         Debug.LogWarning("No matching weapon type found for: " + weaponType);
+    }
+
+    public void AddSecondaryAmmo(ProjectileWeapon projectileWeapon, int secondaryAmmoAmmount)
+    {
+        if (projectileWeapon != null && _secondaryWeaponList.Contains(projectileWeapon))
+        {
+            ProjectileWeapon secondaryWeapon = _secondaryWeaponList.Find(weapon => weapon == projectileWeapon);
+
+            if (secondaryWeapon != null)
+            {
+                secondaryWeapon.AddAmmo(secondaryAmmoAmmount);
+                _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeaponAmmo, _currentSecondaryWeapon.CurrrentAmmo.ToString() + "/" + _currentSecondaryWeapon.CurrentMagazineSize.ToString());
+            }
+        }
     }
 
 
@@ -370,7 +405,9 @@ public class CharacterWeaponSystem : CharacterSystems
         if (_currentPrimaryWeapon.CurrrentAmmo < _currentPrimaryWeapon.CurrentMagazineSize)
         {
             _animator.SetTrigger("Reload");
+
             StartCoroutine(HandleReload(_currentPrimaryWeapon));
+            _eventManager.OnPlaySoundEffect?.Invoke("Reload", transform.position);
         }
 
     }
@@ -391,41 +428,35 @@ public class CharacterWeaponSystem : CharacterSystems
             float t = elapsedTime / transitionDuration;
             _gunPositonAdjust.gunOffset = Vector3.Lerp(startOffset, targetGunOffset, t);
             elapsedTime += Time.deltaTime;
-            yield return null; // Wait for the next frame
+            yield return null; 
         }
 
-        // Ensure the gun offset is exactly zero
         _gunPositonAdjust.gunOffset = targetGunOffset;
 
-        // Get the duration of the reload animation
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
         float reloadDuration = stateInfo.length;
 
-        // Wait for the duration of the reload animation
         yield return new WaitForSeconds(reloadDuration);
 
-        // Perform the reload action on the weapon
         weapon.Reload();
 
-        // Smoothly transition the gun offset back to the original value
         elapsedTime = 0f;
-        startOffset = Vector3.zero; // Start from zero after reload
+        startOffset = Vector3.zero;
 
         while (elapsedTime < transitionDuration)
         {
             float t = elapsedTime / transitionDuration;
             _gunPositonAdjust.gunOffset = Vector3.Lerp(startOffset, currentGunOffset, t);
             elapsedTime += Time.deltaTime;
-            yield return null; // Wait for the next frame
+            yield return null;
+
+            _gunPositonAdjust.gunOffset = currentGunOffset;
+
+            _isReloading = false;
+
+
+            _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeaponAmmo,
+                weapon.CurrrentAmmo.ToString() + "/" + weapon.CurrentMagazineSize.ToString());
         }
-
-        // Ensure the gun offset is exactly at the original position
-        _gunPositonAdjust.gunOffset = currentGunOffset;
-
-        _isReloading = false;  // Re-enable firing after reloading
-
-        // Update UI with new ammo count
-        _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeaponAmmo,
-            weapon.CurrrentAmmo.ToString() + "/" + weapon.CurrentMagazineSize.ToString());
     }
 }

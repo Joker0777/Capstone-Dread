@@ -5,22 +5,27 @@ using UnityEngine;
 public class JumpingEnemyBehaviourSystem : CharacterSystems
 {
     private Rigidbody2D rb;
-    private Collider2D collider;
     public GameObject target;
     private Vector2 moveDirection;
+    private Collider2D collider;
+
+
 
     [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] private float jumpForce = 5f;  // Jump force for the enemy
     [SerializeField] private float detectRange = 10f;
     [SerializeField] private float attackRange = 7f;
     [SerializeField] private float stopRange = 5f;
     [SerializeField] private float backoffRange = 2f;
-
+    [SerializeField] private float obstacleCheckDistance = 1.0f;  // Distance to detect obstacles
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform frontCheck;  // Position to check for obstacles
     [SerializeField] private WeaponSystem weapon;
     [SerializeField] private Animator[] animators;
+    [SerializeField] private string _detectSoundEffect;
 
     public bool isGrounded;
     private bool _isDead;
@@ -34,6 +39,7 @@ public class JumpingEnemyBehaviourSystem : CharacterSystems
         base.Awake();
         rb = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
+
 
         if (weapon == null)
         {
@@ -65,7 +71,6 @@ public class JumpingEnemyBehaviourSystem : CharacterSystems
 
     private void SetHurtState(CharacterType type, Character enemyCharacter, Vector3 vector)
     {
-
         if (type == CharacterType.Enemy && character == enemyCharacter && currentState != EnemyState.IsDead)
         {
             previousState = currentState;
@@ -80,7 +85,6 @@ public class JumpingEnemyBehaviourSystem : CharacterSystems
             currentState = EnemyState.IsDead;
         }
     }
-
 
     private void GroundCheck()
     {
@@ -114,30 +118,27 @@ public class JumpingEnemyBehaviourSystem : CharacterSystems
 
     private void CharacterHurt()
     {
-     
-            foreach (var animator in animators)
-            {
-                StartCoroutine(PlayDeathAnimationAndDestroy(animator, "isHurt", "Hurt"));
-
-            }
-            rb.velocity = Vector3.zero;
-            currentState = previousState;
-        
-
+        foreach (var animator in animators)
+        {
+            StartCoroutine(PlayDeathAnimationAndDestroy(animator, "isHurt", "Hurt"));
+        }
+        rb.velocity = Vector3.zero;
+        currentState = previousState;
     }
 
     private void CharacterDeath()
     {
 
 
+        rb.gravityScale = 0;
         rb.velocity = Vector3.zero;
-  
+        collider.enabled = false;
+
         foreach (var animator in animators)
         {
+            animator.SetBool("deathState", true);
             StartCoroutine(PlayDeathAnimationAndDestroy(animator, "isDead", "DeathAnimation"));
         }
-        this.enabled = false;
-
     }
 
     protected virtual IEnumerator PlayDeathAnimationAndDestroy(Animator animator, string trigger, string animation)
@@ -147,12 +148,12 @@ public class JumpingEnemyBehaviourSystem : CharacterSystems
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         while (stateInfo.IsName(animation) && stateInfo.normalizedTime < 1.0f)
         {
-
             yield return null;
             stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         }
-
-        // Destroy(gameObject,4);
+       
+        // Optionally destroy the enemy
+         Destroy(gameObject, 2);
     }
 
     protected bool InRangeOfTarget(float range, GameObject target)
@@ -167,6 +168,7 @@ public class JumpingEnemyBehaviourSystem : CharacterSystems
         if (InRangeOfTarget(detectRange, target))
         {
             currentState = EnemyState.DetectTarget;
+            _eventManager.OnPlaySoundEffect?.Invoke(_detectSoundEffect, transform.position);
         }
     }
 
@@ -193,18 +195,17 @@ public class JumpingEnemyBehaviourSystem : CharacterSystems
         {
             float distance = Vector2.Distance(transform.position, target.transform.position);
 
-            // Backoff if player is too close
             if (distance <= backoffRange)
             {
-                currentState = EnemyState.Backoff;  // Transition to backoff state
+                currentState = EnemyState.Backoff;
             }
             else if (distance <= stopRange)
             {
-                rb.velocity = new Vector2(0, rb.velocity.y); // Stop movement
+                rb.velocity = new Vector2(0, rb.velocity.y);
             }
             else
             {
-                MoveTowardsTarget(); // Move towards target if not in stop range
+                MoveTowardsTarget();
             }
 
             if (!InRangeOfTarget(attackRange, target))
@@ -219,14 +220,9 @@ public class JumpingEnemyBehaviourSystem : CharacterSystems
         if (target != null)
         {
             float distanceToTarget = target.transform.position.x - transform.position.x;
-
-            // Move away from the target without flipping direction
-            moveDirection = new Vector2(-Mathf.Sign(distanceToTarget), 0);  // Move in the opposite direction
+            moveDirection = new Vector2(-Mathf.Sign(distanceToTarget), 0);
             rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
 
-            // Do not flip the sprite in backoff
-
-            // Transition back to Attack or Detect state if distance increases
             if (Vector2.Distance(target.transform.position, transform.position) > backoffRange)
             {
                 if (InRangeOfTarget(attackRange, target))
@@ -258,25 +254,43 @@ public class JumpingEnemyBehaviourSystem : CharacterSystems
             moveDirection = new Vector2(Mathf.Sign(distanceToTarget), 0);
             rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
 
-            // Flip enemy sprite based on direction (only when moving towards target)
+            DetectObstaclesAndJump();
+
             if (moveDirection.x > 0)
-                transform.localScale = new Vector3(1, 1, 1); // Facing right   CHANGED STARTING SCALE
+                transform.localScale = new Vector3(1, 1, 1);
             else if (moveDirection.x < 0)
-                transform.localScale = new Vector3(-1, 1, 1); // Facing left
+                transform.localScale = new Vector3(-1, 1, 1);
+        }
+    }
+
+    private void DetectObstaclesAndJump()
+    {
+        // Cast a ray forward to detect obstacles
+        RaycastHit2D hit = Physics2D.Raycast(frontCheck.position, moveDirection, obstacleCheckDistance, groundLayer);
+
+        if (hit.collider != null && isGrounded)
+        {
+            // If an obstacle is detected and the player is higher than the enemy, jump
+            if (target != null && target.transform.position.y > transform.position.y + 1.0f)
+            {
+                Jump();
+            }
+        }
+    }
+
+    private void Jump()
+    {
+        if (isGrounded)
+        {
+            rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
     }
 
     private void UpdateAnimations()
     {
-
-
-
-
         foreach (var animator in animators)
         {
-
             animator.SetBool("isGrounded", isGrounded);
-
 
             if (currentState == EnemyState.Patrol)
             {

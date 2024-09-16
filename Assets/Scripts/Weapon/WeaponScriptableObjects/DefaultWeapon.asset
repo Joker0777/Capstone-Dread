@@ -15,15 +15,15 @@ MonoBehaviour:
   weaponVisual: {fileID: 403246997971825730, guid: 87091008fc5486a4385cc55a4beae3fd, type: 3}
   _weaponObjectPoolTag: DefaultWeapon
   _weaponCooldown: 0.7
-  _currentWeaponCooldown: 364
+  _currentWeaponCooldown: 0
   _projectilePrefab: {fileID: 1368470505411515553, guid: 32fcd6dcebca71b4681658245d365f03, type: 3}
   _poolSize: 10
   _targetTag: Enemy
   _muzzleFlashPrefab: {fileID: 5509771191616995036, guid: d8eba48287d866e42aaeff8fdc649c88, type: 3}
   _projectileParent: {fileID: 0}
   _shellCasingTag: DefaultShell
-  _accuracy: 1
+  _accuracy: 0.9
   _weaponSpeed: 200
   _weaponDamage: 10
   _weaponRange: 5
-  _magazineSize: 6
+  _magazineSize: 15

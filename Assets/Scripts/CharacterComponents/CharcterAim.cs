@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class CharcterAim : CharacterSystems
 {
@@ -10,38 +13,55 @@ public class CharcterAim : CharacterSystems
     [SerializeField] private float rotationSpeed = 5f;
     [SerializeField] private Transform characterTransform;
 
-    [SerializeField] private Transform aimTarget;
+
     [SerializeField] private Vector3 offsetWhenFacingRight;
     [SerializeField] private Vector3 offsetWhenFacingLeft;
 
     [SerializeField] private float flipBuffer = 0.1f;
     [SerializeField] private float angleCorrection = 0f;
+
+    [SerializeField] private string aimTargetTag;
+    [SerializeField] private string gunSightTag;
+
+    private Transform _gunSightTransform;
+    private Transform _aimTarget;
     public bool IsFacingRight { get; set; }
 
+
+    protected override void Awake()
+    {
+        base.Awake();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
     protected override void Start()
     {
         base.Start();
         IsFacingRight = true;
         _eventManager.IsFacingRight?.Invoke(IsFacingRight);
+
+        AssignSceneTransforms();
     }
 
     private void Update()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
-
+      
+        _gunSightTransform.position = mousePosition;
+     
         Vector3 aimDirection = mousePosition - gunTransform.position;
 
         if (!IsFacingRight)
         {
-            aimTarget.position = new Vector3(mousePosition.x, -mousePosition.y, mousePosition.z) + offsetWhenFacingLeft;
+            _aimTarget.position = new Vector3(mousePosition.x, -mousePosition.y, mousePosition.z) + offsetWhenFacingLeft;
             aimDirection.x = -aimDirection.x;
-
         }
         else
         {
-            aimTarget.position = mousePosition + offsetWhenFacingRight;
+            _aimTarget.position = mousePosition + offsetWhenFacingRight;        
         }
+
+
 
         if (mousePosition.x > characterTransform.position.x + flipBuffer && !IsFacingRight)
         {
@@ -65,11 +85,34 @@ public class CharcterAim : CharacterSystems
 
         gunTransform.localRotation = Quaternion.Euler(0, 0, newAngle);
     }
-
     private void FlipCharacter(bool facingRight)
     {
         IsFacingRight = facingRight;
         _eventManager.IsFacingRight?.Invoke(IsFacingRight);
         characterTransform.localScale = new Vector3(facingRight ? 1 : -1, 1, 1);
+    }
+    private void OnDestroy()
+    {
+
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        AssignSceneTransforms();
+    }
+
+    private void AssignSceneTransforms()
+    {
+        _gunSightTransform = GameObject.FindWithTag("GunSight").transform;
+        _aimTarget = GameObject.FindWithTag("AimTarget").transform;
+
+        if (_aimTarget == null || _gunSightTransform == null)
+        {
+            Debug.LogWarning("One or more required objects were not found in the scene!");
+        }
+        else
+        {
+            Debug.Log("Objects successfully assigned.");
+        }
     }
 }

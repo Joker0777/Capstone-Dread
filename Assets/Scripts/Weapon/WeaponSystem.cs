@@ -8,13 +8,14 @@ public class WeaponSystem : CharacterSystems
     [SerializeField] protected List<Weapon> _primaryWeaponList = new List<Weapon>();
     [SerializeField] protected WeaponSpawnPoints[] _weaponSpawnPoints;
 
+    [SerializeField] protected string _weaponProjectileParentTag;
     [SerializeField] protected string _weaponTarget;
 
     protected Weapon _currentPrimaryWeapon;
     protected Transform[] _currentWeaponSpawnPoints;
     protected int _currentWeaponIndex = 0;
     protected int _primaryWeaponSpawnPointIndex;
-
+    protected GameObject _weaponProjectileParent;
     protected Timer _primaryCooldownTimer;
     protected float _currentPrimaryWeaponCooldown;
     protected float _fireRateIncreaseFactor = 1f;
@@ -47,6 +48,7 @@ public class WeaponSystem : CharacterSystems
     {
         base.Start();
         _primaryCooldownTimer = new Timer(_currentPrimaryWeaponCooldown);
+        _weaponProjectileParent = GameObject.FindWithTag(_weaponProjectileParentTag);
         InitializeWeaponList();
     }
 
@@ -57,6 +59,7 @@ public class WeaponSystem : CharacterSystems
         if (_primaryWeaponList.Count > 0)
         {
             _currentPrimaryWeapon = _primaryWeaponList[_currentWeaponIndex];
+            Debug.Log(_primaryWeaponList.Count);
 
         }
     }
@@ -65,6 +68,7 @@ public class WeaponSystem : CharacterSystems
     {
         if (_primaryCooldownTimer.IsRunningCoroutine) return;
         UseWeaponLogic(_currentPrimaryWeapon, ref _primaryWeaponSpawnPointIndex, _primaryCooldownTimer);
+        Debug.Log("In use primary weapon");
     }
 
     protected virtual void UseWeaponLogic(Weapon weapon, ref int spawnPointIndex, Timer cooldownTimer)

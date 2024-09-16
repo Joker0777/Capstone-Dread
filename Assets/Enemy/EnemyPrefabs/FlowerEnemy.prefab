@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1517831252771393965
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1967437599722597382}
+  m_Layer: 7
+  m_Name: VisualTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1967437599722597382
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517831252771393965}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 256203240020097660}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2876536723371122177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4444301046507461038}
+  m_Layer: 7
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4444301046507461038
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2876536723371122177}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 256203240020097660}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4692622161840887352
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,8 +73,9 @@ GameObject:
   - component: {fileID: 256203240020097660}
   - component: {fileID: 1978646596015530185}
   - component: {fileID: 7174313589429980404}
-  - component: {fileID: 8862508589041291237}
+  - component: {fileID: 6267848129466999599}
   - component: {fileID: 5555053368643959329}
+  - component: {fileID: 4343069540789713133}
   - component: {fileID: 5697129246210142845}
   - component: {fileID: 3324335224675156881}
   - component: {fileID: 6408441134975734264}
@@ -37,6 +100,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7693207562243963445}
+  - {fileID: 1967437599722597382}
+  - {fileID: 4444301046507461038}
+  - {fileID: 7984297251135351890}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1978646596015530185
@@ -112,7 +178,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8862508589041291237
+--- !u!114 &6267848129466999599
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,18 +187,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 4692622161840887352}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddc94c8ed100bb04f8ae66a1ca71d896, type: 3}
+  m_Script: {fileID: 11500000, guid: 1fed46247373e2c4688dc01d649fa239, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 1978646596015530185}
   _primaryWeaponList:
   - {fileID: 11400000, guid: 417f90636d6b7ac41990a56fce22fc82, type: 2}
   _weaponSpawnPoints:
   - spawnLocations:
     - {fileID: 7693207562243963445}
-    weaponTypeTag: FlowerWeapon
+    weaponTypeTag: FlowerWeaponHItEffect
+  _projectileParent: {fileID: 7693207562243963445}
+  _weaponVisualTransform: {fileID: 1967437599722597382}
+  _currentPrimaryWeaponCooldown: 0
   _weaponTarget: PlayerTarget
-  _weaponVisualTransform: {fileID: 256203240020097660}
-  _projectileParent: {fileID: 0}
 --- !u!114 &5555053368643959329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,15 +214,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterType: 1
-  _maxHealth: 40
+  _maxHealth: 50
   __impactDamage: 0
-  _particleEffectTag: 
-  _soundEffectTag: 
+  _particleEffectTag: EnemyDestroyedFlower
+  _deathSoundEffectTag: FlowerDeathEffect
+  _hurtSoundEffectTag: FlowerHurtEffect
   _collisionIgnore: Enemy
   _deadLayer: Dead
   _animator: {fileID: 1978646596015530185}
   currentHealth: 0
---- !u!114 &5697129246210142845
+--- !u!114 &4343069540789713133
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,6 +231,40 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4692622161840887352}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad7a7c2797e46604abd4999eab22b6a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  moveSpeed: 0
+  detectRange: 15
+  attackRange: 10
+  stopRange: 0
+  backoffRange: 0
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  groundCheck: {fileID: 4444301046507461038}
+  frontCheck: {fileID: 7984297251135351890}
+  groundCheckRadius: 0.2
+  frontCheckDistance: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  weapon: {fileID: 6267848129466999599}
+  animators:
+  - {fileID: 1978646596015530185}
+  _detectSoundEffect: FlowerOnAttackEffect
+  currentState: 0
+  previousState: 0
+--- !u!114 &5697129246210142845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4692622161840887352}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0732a300f4e7ae5499598e4baa9328cd, type: 3}
   m_Name: 
@@ -172,7 +275,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 2048
-  weapon: {fileID: 8862508589041291237}
+  weapon: {fileID: 6267848129466999599}
   animators:
   - {fileID: 1978646596015530185}
   currentState: 0
@@ -209,7 +312,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.029551864, y: -0.17888284}
+  m_Offset: {x: 0.003622964, y: -0.1709047}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.418, y: 0.487}
@@ -220,7 +323,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.66506934, y: 1.0041089}
+  m_Size: {x: 0.6132115, y: 0.9881526}
   m_EdgeRadius: 0
 --- !u!50 &6408441134975734264
 Rigidbody2D:
@@ -248,7 +351,38 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
+--- !u!1 &4935488326155479075
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7984297251135351890}
+  m_Layer: 7
+  m_Name: FrontCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7984297251135351890
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4935488326155479075}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 256203240020097660}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8930611811449091207
 GameObject:
   m_ObjectHideFlags: 0

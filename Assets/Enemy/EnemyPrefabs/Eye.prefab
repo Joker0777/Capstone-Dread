@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 5777276503664062888}
   - component: {fileID: 3049240647507861307}
   - component: {fileID: 2730449364836360734}
-  - component: {fileID: 3896022714003783546}
   - component: {fileID: 3522040554336439017}
   - component: {fileID: 14258528304230621}
   m_Layer: 7
@@ -164,8 +163,9 @@ MonoBehaviour:
   _characterType: 1
   _maxHealth: 1
   __impactDamage: 0
-  _particleEffectTag: 
-  _soundEffectTag: 
+  _particleEffectTag: EnemyDestroyedEye
+  _deathSoundEffectTag: EyeDeathEffect
+  _hurtSoundEffectTag: 
   _collisionIgnore: Enemy
   _deadLayer: Dead
   _animator: {fileID: 9568674}
@@ -188,34 +188,8 @@ MonoBehaviour:
   - spawnLocations:
     - {fileID: 4533205536267903090}
     weaponTypeTag: SelfDestructWeapon
+  _weaponProjectileParentTag: ProjectileParent
   _weaponTarget: PlayerTarget
---- !u!114 &3896022714003783546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 122490}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a244a1b0512b4848b472daa376ef101, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  moveSpeed: 2
-  detectRange: 10
-  attackRange: 0.5
-  stopRange: 0.3
-  backoffRange: 0
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 2112
-  weapon: {fileID: 2730449364836360734}
-  animators:
-  - {fileID: 9568674}
-  - {fileID: 5364416378055490413}
-  currentState: 0
-  previousState: 0
 --- !u!114 &3522040554336439017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,8 +203,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  moveSpeed: 2
-  detectRange: 10
+  moveSpeed: 5
+  detectRange: 30
   attackRange: 1
   stopRange: 1
   backoffRange: 0
@@ -241,6 +215,7 @@ MonoBehaviour:
   animators:
   - {fileID: 9568674}
   - {fileID: 5364416378055490413}
+  _detectSoundEffect: EyeOnAttackEffect
   currentState: 0
   previousState: 0
 --- !u!50 &14258528304230621

@@ -8,8 +8,7 @@ public class MeleeWeapon : Weapon
     [Header("Attack Setup")]
     [SerializeField] private int damage = 10;
     [SerializeField] private float attackRange = 1f; 
-    [SerializeField] private LayerMask targetLayer;   
-    [SerializeField] private string audioClipTag;     
+    [SerializeField] private LayerMask targetLayer;    
 
     private EventManager _eventManager;
 

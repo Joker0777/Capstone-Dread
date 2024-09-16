@@ -13,16 +13,17 @@ MonoBehaviour:
   m_Name: FlowerWeapon
   m_EditorClassIdentifier: 
   weaponVisual: {fileID: 403246997971825730, guid: 87091008fc5486a4385cc55a4beae3fd, type: 3}
-  _weaponObjectPoolTag: FlowerWeapon
+  _weaponObjectPoolTag: FlowerWeaponHItEffect
   _weaponCooldown: 0.5
   _currentWeaponCooldown: 0
   _projectilePrefab: {fileID: 1368470505411515553, guid: 790149d08fa261347a5e8a5e8a7455e2, type: 3}
   _poolSize: 10
   _targetTag: PlayerTarget
-  _muzzleFlashPrefab: {fileID: 5487836809483658365, guid: ccf35874ea38a8b4a8452287dab289bf, type: 3}
+  _muzzleFlashPrefab: {fileID: 5509771191616995036, guid: fb4051140509e3f4ea251aa279e412b5, type: 3}
   _projectileParent: {fileID: 0}
-  _accuracy: 0.91
+  _shellCasingTag: DefaultShell
+  _accuracy: 0.85
   _weaponSpeed: 80
-  _weaponDamage: 10
+  _weaponDamage: 15
   _weaponRange: 3
-  _magazineSize: 5
+  _magazineSize: 50

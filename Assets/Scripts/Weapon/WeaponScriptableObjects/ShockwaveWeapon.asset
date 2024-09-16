@@ -23,7 +23,7 @@ MonoBehaviour:
   _projectileParent: {fileID: 0}
   _shellCasingTag: ShockWaveShell
   _accuracy: 0.529
-  _weaponSpeed: 40
+  _weaponSpeed: 200
   _weaponDamage: 0
   _weaponRange: 0
   _magazineSize: 1

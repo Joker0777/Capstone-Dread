@@ -13,7 +13,7 @@ public class TurretBehaviorSystem : CharacterSystems
  
 
     [SerializeField] private LayerMask targetLayer;
-    [SerializeField] private RangedWeaponSystem weapon;
+    [SerializeField] private RangedEnemyWeaponSystem weapon;
     [SerializeField] private Animator[] animators;
 
     private bool isGrounded;
@@ -30,7 +30,7 @@ public class TurretBehaviorSystem : CharacterSystems
 
         if (weapon == null)
         {
-            weapon = GetComponentInChildren<RangedWeaponSystem>();
+            weapon = GetComponentInChildren<RangedEnemyWeaponSystem>();
             if (weapon == null)
             {
                 Debug.LogWarning("Weapon system not assigned or found in children.");
@@ -214,6 +214,6 @@ public class TurretBehaviorSystem : CharacterSystems
 
     public void FireWeapon()
     {
-        weapon?.UsePrimaryWeapon();
+        weapon?.FirePrimaryWeapon();
     }
 }

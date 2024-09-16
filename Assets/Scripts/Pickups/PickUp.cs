@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PickUp : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PickUp : MonoBehaviour
     [SerializeField] WeaponMod mod;
     [SerializeField] ProjectileWeapon weapon;
     [SerializeField] int _healthAmount;
+    [SerializeField] int _ammoAmount;
     private Timer _pickUpTimer;
 
 
@@ -44,7 +46,7 @@ public class PickUp : MonoBehaviour
       //  Debug.Log(character);
         if (character != null && character.CompareTag(unitTag))
         {
-            PickUpManager.instance.CollectPickup(character, this, mod, weapon, _healthAmount);
+            PickUpManager.instance.CollectPickup(character, this, mod, weapon, _healthAmount, _ammoAmount);
             Destroy(gameObject);
         }       
     }

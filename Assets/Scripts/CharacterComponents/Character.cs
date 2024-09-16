@@ -15,7 +15,8 @@ public class Character : MonoBehaviour, IDamagable
     [SerializeField] protected int _maxHealth = 100;
     [SerializeField] protected int __impactDamage = 10;
     [SerializeField] string _particleEffectTag;
-    [SerializeField] string _soundEffectTag;
+    [SerializeField] string _deathSoundEffectTag;
+    [SerializeField] string _hurtSoundEffectTag;
     [SerializeField] string _collisionIgnore;
     [SerializeField] string _deadLayer;
     [SerializeField] Animator _animator;
@@ -51,9 +52,9 @@ public class Character : MonoBehaviour, IDamagable
             {
                 this.gameObject.layer = LayerMask.NameToLayer(_deadLayer);
                 _isDead = true;
-                _eventManager.OnPlayParticleEffect?.Invoke(CharacterType.ToString(), transform.position, 1);
+                _eventManager.OnPlayParticleEffect?.Invoke(_particleEffectTag, transform.position, 1);
                 _eventManager.OnCharacterDestroyed?.Invoke(CharacterType, this, transform.position);
-                _eventManager.OnPlaySoundEffect?.Invoke("ShipEffect", transform.position);
+                _eventManager.OnPlaySoundEffect?.Invoke(_deathSoundEffectTag, transform.position);
             }
         }
     }
@@ -65,6 +66,7 @@ public class Character : MonoBehaviour, IDamagable
         {
             _healthSystem.DecreaseHealth(damage);
             _eventManager.OnCharacterHurt?.Invoke(CharacterType, this, transform.position);
+            _eventManager.OnPlaySoundEffect?.Invoke(_hurtSoundEffectTag, transform.position);
             Debug.Log("Damage taken. Current Health " + _healthSystem.CurrentHealth);
         }
     }
@@ -87,13 +89,8 @@ public class Character : MonoBehaviour, IDamagable
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         Vector3 hitPoint = collision.contacts[0].point;
-    //    if (!collision.collider.gameObject.CompareTag(_collisionIgnore))
-      //  {
-            collision.collider?.attachedRigidbody?.GetComponent<IDamagable>()?.DamageTaken(__impactDamage);
-      //  }
-
-        _eventManager.OnPlayParticleEffect?.Invoke(_particleEffectTag, (Vector2)hitPoint, 1f);
-        _eventManager.OnPlaySoundEffect?.Invoke(_soundEffectTag, (Vector2)hitPoint);
+ 
+        collision.collider?.attachedRigidbody?.GetComponent<IDamagable>()?.DamageTaken(__impactDamage); 
     }
 
 }

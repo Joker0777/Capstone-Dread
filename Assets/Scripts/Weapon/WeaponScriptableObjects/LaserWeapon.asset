@@ -15,15 +15,15 @@ MonoBehaviour:
   weaponVisual: {fileID: 403246997971825730, guid: 7182cb833c0efe241927c12074e544a0, type: 3}
   _weaponObjectPoolTag: LaserWeapon
   _weaponCooldown: 0.2
-  _currentWeaponCooldown: 4
+  _currentWeaponCooldown: 0
   _projectilePrefab: {fileID: 1368470505411515553, guid: 609e4857a61b57d4097752e3c010d115, type: 3}
   _poolSize: 10
   _targetTag: Enemy
   _muzzleFlashPrefab: {fileID: 5509771191616995036, guid: b54ee657ec6e1b341aa010f8d0edfa56, type: 3}
   _projectileParent: {fileID: 0}
   _shellCasingTag: LaserShell
-  _accuracy: 1
+  _accuracy: 0.95
   _weaponSpeed: 300
-  _weaponDamage: 20
+  _weaponDamage: 7
   _weaponRange: 0
   _magazineSize: 200

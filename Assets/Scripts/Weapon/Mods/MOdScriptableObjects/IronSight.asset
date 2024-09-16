@@ -17,7 +17,7 @@ MonoBehaviour:
   modType: 1
   damageModifier: 0
   fireRateModifier: 0
-  accuracyModifier: 0.194
+  accuracyModifier: 0.05
   magazineSizeModifier: 0
   rangeModifier: 0
   speedModifier: 0

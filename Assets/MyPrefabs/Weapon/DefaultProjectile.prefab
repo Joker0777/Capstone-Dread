@@ -48,12 +48,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _projectileTimerLength: 15
-  _particleEffectScale: 0.4
+  _particleEffectScale: 0.5
   _damageLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 136
   _ignoreLayer: Dead
-  _audioClipTag: PlasmaWeaponHitEffect
+  _audioClipTag: DefaultWeaponHitEffect
+  _projectilePoolTag: DefaultWeaponHitEffect
 --- !u!61 &1096188933126353650
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -124,7 +125,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!1 &4294508164841289917
 GameObject:

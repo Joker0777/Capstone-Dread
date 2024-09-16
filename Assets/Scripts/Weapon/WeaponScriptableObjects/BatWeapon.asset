@@ -21,4 +21,3 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 2048
-  audioClipTag: BatAttackEffect

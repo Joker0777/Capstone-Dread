@@ -56,7 +56,12 @@ public class ProjectileWeapon : Weapon
             {
                 ObjectPoolSystem<MuzzleFlash>.Instance.AddPool(_poolSize, _muzzleFlashPrefab._poolTag, _muzzleFlashPrefab, _projectileParent);
                 muzzleFlash = ObjectPoolSystem<MuzzleFlash>.Instance.GetObject(_muzzleFlashPrefab._poolTag);
+                Debug.Log("In add pool muzzleflash");
 
+            }
+            else
+            {
+                Debug.Log("Couldnt get muzzleflash");
             }
 
             if (muzzleFlash != null)
@@ -74,6 +79,7 @@ public class ProjectileWeapon : Weapon
             {
                 ObjectPoolSystem<Projectile>.Instance.AddPool(_poolSize, _weaponObjectPoolTag, _projectilePrefab, _projectileParent);
                 nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject(_weaponObjectPoolTag);
+                Debug.Log("In add pool projectile");
             }
 
 
@@ -82,6 +88,10 @@ public class ProjectileWeapon : Weapon
                 nextProjectile.transform.position = spawn.position;
                 nextProjectile.transform.rotation = SetTrajectoryAngle(spawn.right, spawn.rotation);
                 nextProjectile.SetupProjectile(_weaponDamage, _weaponSpeed, targetTag);
+            }
+            else
+            {
+                Debug.Log("Couldnt get projectile");
             }
         }
         
@@ -111,6 +121,13 @@ public class ProjectileWeapon : Weapon
     public void Reload()
     {
         _currentAmmo = _currentMagazineSize;
+    }
+    public void AddAmmo(int ammoAmount)
+    {
+        if (ammoAmount > 0)
+        {
+            _currentAmmo = Mathf.Clamp(_currentAmmo + ammoAmount, 0, _magazineSize);
+        }
     }
 
     private Quaternion SetTrajectoryAngle(Vector2 direction, Quaternion rotation)

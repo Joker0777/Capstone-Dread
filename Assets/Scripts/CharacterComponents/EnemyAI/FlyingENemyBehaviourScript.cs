@@ -17,6 +17,7 @@ public class FlyingENemyBehaviourScript : CharacterSystems
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private WeaponSystem weapon;
     [SerializeField] private Animator[] animators;
+    [SerializeField] private string _detectSoundEffect;
 
     public enum EnemyState { Patrol, DetectTarget, AttackTarget, Backoff, IsDead, IsHurt }
     public EnemyState currentState = EnemyState.Patrol;
@@ -131,7 +132,7 @@ public class FlyingENemyBehaviourScript : CharacterSystems
             stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         }
 
-         Destroy(gameObject,4);
+         Destroy(gameObject,2);
     }
 
     protected bool InRangeOfTarget(float range, GameObject target)
@@ -146,6 +147,7 @@ public class FlyingENemyBehaviourScript : CharacterSystems
         if (InRangeOfTarget(detectRange, target))
         {
             currentState = EnemyState.DetectTarget;
+            _eventManager.OnPlaySoundEffect?.Invoke(_detectSoundEffect, transform.position);
         }
     }
 

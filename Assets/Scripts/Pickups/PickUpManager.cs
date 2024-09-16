@@ -8,22 +8,10 @@ public class PickUpManager : MonoBehaviour
 
     public static PickUpManager instance;
 
-    //[SerializeField] private PickupSpawner _pickupSpawner;
     [SerializeField] private PlayerCharacter _playerCharacter;
-   // [SerializeField] private ScoreManager _scoreManager;
-
-    //powerUp pickups
-   // private PowerUpPickUp _currentPowerUpPickUp;
-
-    //powerup timer
-    [SerializeField] protected float _powerUpTimerLength = 10;
-    private Timer _PowerUpTimer;
-    private float _timeRemaining;
-    private bool _powerUpTimerRunning;
 
     //player systems references
     private CharacterWeaponSystem _weaponSystem;
-    private MovmentSystem _movmentSystem;
 
     private EventManager _eventManager;
 
@@ -33,7 +21,7 @@ public class PickUpManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-          //  DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -45,56 +33,17 @@ public class PickUpManager : MonoBehaviour
 
     private void Start()
     {
-        _PowerUpTimer = new Timer(_powerUpTimerLength);
-
         _weaponSystem = _playerCharacter.GetComponent<CharacterWeaponSystem>();
-        _movmentSystem = _playerCharacter.GetComponent<MovmentSystem>();
-
-      //  _eventManager.OnUIChange?.Invoke(UIElementType.PickUpTimer, "0");
-       // _eventManager.OnUIChange?.Invoke(UIElementType.pickUp, "EmptyPowerUp");
-
     }
 
-    private void OnEnable()
-    {
-       // _eventManager.OnPlayerRespawn += ResetPlayer;
 
-    }
-
-    private void OnDisable()
-    {
-       // _eventManager.OnPlayerRespawn -= ResetPlayer;
-    }
-
-    private void Update()
-    {
-        if (_powerUpTimerRunning)
-        {
-            _PowerUpTimer.UpdateTimerBasic(Time.deltaTime);
-
-          //  _eventManager.OnUIChange?.Invoke(UIElementType.PickUpTimer, Mathf.CeilToInt(_PowerUpTimer.TimeRemaining).ToString());
-          //  _eventManager.OnUIChange?.Invoke(UIElementType.pickUp,_currentPowerUpPickUp.ToString());
-
-            if (!_PowerUpTimer.IsRunningBasic())
-            {
-                _powerUpTimerRunning = false;
-               // _currentPowerUpPickUp.DeactivatePowerUp(_playerCharacter);
-              //  _eventManager.OnUIChange?.Invoke(UIElementType.PickUpTimer, "0");
-              //  _eventManager.OnUIChange?.Invoke(UIElementType.pickUp, "EmptyPowerUp");
-            }
-        }
-       
-    }
-
-    
-
-    public void CollectPickup(PlayerCharacter character, PickUp pickup, WeaponMod mod = null, ProjectileWeapon weapon = null, int healthAmount = 10)
+    public void CollectPickup(PlayerCharacter character, PickUp pickup, WeaponMod mod = null, ProjectileWeapon weapon = null, int healthAmount = 10, int ammoAmount = 1)
     {
         _playerCharacter = character;
 
         if (_playerCharacter == null) return;
   
-        _eventManager.OnScoreIncrease?.Invoke("Pickup");
+        _eventManager.OnPlaySoundEffect?.Invoke("Pickup", transform.position);
     
         switch (pickup.PickupType)
         {
@@ -122,7 +71,9 @@ public class PickUpManager : MonoBehaviour
             case PickupType.HealthPickup:
                 CollectHealth(healthAmount);
                 break;
-
+            case PickupType.SecondaryAmmo:
+                CollectSecondaryAmmo(weapon, ammoAmount);
+                break;
         }      
     }
 
@@ -146,36 +97,16 @@ public class PickUpManager : MonoBehaviour
     {
         _weaponSystem.AddMod(mod);
     }
-    
-    
-    
-    
 
-
-    public void DestoyAllPickUps()
+    private void CollectSecondaryAmmo(ProjectileWeapon weapon, int ammoAmount)
     {
-     //   List<GameObject> spawnedPickUps = _pickupSpawner.SpawnedPickUps;
-
-     //   if(spawnedPickUps != null && spawnedPickUps.Count > 0)
-       // {
-       //     foreach (GameObject pickUp in spawnedPickUps)
-       //     {
-         //       if (pickUp != null)
-          //      {
-         //           Destroy(pickUp.gameObject);
-           //     }
-         //   }
-          //  spawnedPickUps.Clear();
-       // }
+        _weaponSystem?.AddSecondaryAmmo(weapon,ammoAmount);
     }
-
+    
+      
     private void ResetPlayer(PlayerCharacter character)
     {
         _playerCharacter = character;
-
-     //   playerWeaponSystem = _playerUnit.GetComponentInChildren<PlayerWeaponSystem>();
-        _movmentSystem = _playerCharacter.GetComponentInChildren<MovmentSystem>();
-    }
-           
-    
+        _weaponSystem = _playerCharacter.GetComponent<CharacterWeaponSystem>();
+    }   
 }

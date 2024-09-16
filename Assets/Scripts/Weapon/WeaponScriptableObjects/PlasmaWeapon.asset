@@ -14,16 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponVisual: {fileID: 403246997971825730, guid: c4ad0f7b0ed490942bb352969d58d085, type: 3}
   _weaponObjectPoolTag: PlasmaWeapon
-  _weaponCooldown: 1
-  _currentWeaponCooldown: 56
+  _weaponCooldown: 1.2
+  _currentWeaponCooldown: 0
   _projectilePrefab: {fileID: 1368470505411515553, guid: 511186f1c1af1df4aac69218009577ee, type: 3}
   _poolSize: 6
   _targetTag: Enemy
   _muzzleFlashPrefab: {fileID: 5509771191616995036, guid: e48f8eece99e2aa4bbe3458424c14b85, type: 3}
   _projectileParent: {fileID: 0}
   _shellCasingTag: PlasmaShell
-  _accuracy: 0.628
+  _accuracy: 0.85
   _weaponSpeed: 100
-  _weaponDamage: 60
+  _weaponDamage: 25
   _weaponRange: 0
   _magazineSize: 15

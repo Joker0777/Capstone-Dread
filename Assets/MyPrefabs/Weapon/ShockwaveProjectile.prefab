@@ -53,7 +53,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _ignoreLayer: Dead
-  _audioClipTag: PlasmaWeaponHitEffect
+  _audioClipTag: ShockWaveEffect
+  _projectilePoolTag: ShockWaveHitEffect
 --- !u!61 &1096188933126353650
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -124,7 +125,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!1 &3689598348783154387
 GameObject:

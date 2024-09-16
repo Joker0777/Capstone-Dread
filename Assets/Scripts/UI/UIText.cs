@@ -7,13 +7,14 @@ public class UIText : UIElement
 {
      private TextMeshProUGUI _textUI;
      private string _updatedUIText = "";
+    [SerializeField] private string _initialText = "_";
 
       public string UpdatedUIText
       {
          set 
          { 
              _updatedUIText = value;
-             _textUI.text = $"_ {UpdatedUIText}";
+             _textUI.text = $"{_initialText} {UpdatedUIText}";
          }
        get { return _updatedUIText; }
       }
@@ -26,7 +27,7 @@ public class UIText : UIElement
 
     void Start()
     {
-        _textUI.text = $"_ {UpdatedUIText}";
+        _textUI.text = $"{_initialText} {UpdatedUIText}";
     }
 
     public override void SetUI(string elementText)

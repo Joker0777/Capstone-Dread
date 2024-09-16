@@ -127,6 +127,37 @@ MonoBehaviour:
     - {x: 0, y: 0, z: 0, w: 0}
     - {x: 0, y: 0, z: 0, w: 0}
   m_Flip: 0
+--- !u!1 &3051522321025803755
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6351978224189928813}
+  m_Layer: 7
+  m_Name: FrontCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6351978224189928813
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3051522321025803755}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.46, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6996896224222953953}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3105697090639558037
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,7 +183,7 @@ Transform:
   m_GameObject: {fileID: 3105697090639558037}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.105, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -532,12 +563,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8586114601220566666}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.8520473, w: 0.5234649}
-  m_LocalPosition: {x: -0.606, y: 2.418, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0.74215806, w: -0.6702249}
+  m_LocalPosition: {x: 3.46, y: -0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4778875254951111434}
+  m_Father: {fileID: 9218623661146046793}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9142576454980364534
 GameObject:
@@ -849,6 +880,9 @@ PrefabInstance:
       insertIndex: 0
       addedObject: {fileID: 5990261030587438512}
     - targetCorrespondingSourceObject: {fileID: -7552582706839291426, guid: 8c3db546cbe65fd4790e1c51595f8409, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 6351978224189928813}
+    - targetCorrespondingSourceObject: {fileID: -7552582706839291426, guid: 8c3db546cbe65fd4790e1c51595f8409, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6402567498089712433}
     - targetCorrespondingSourceObject: {fileID: -7552582706839291426, guid: 8c3db546cbe65fd4790e1c51595f8409, type: 3}
@@ -860,9 +894,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -7552582706839291426, guid: 8c3db546cbe65fd4790e1c51595f8409, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5052210327342295447}
-    - targetCorrespondingSourceObject: {fileID: 3776224005971956533, guid: 8c3db546cbe65fd4790e1c51595f8409, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1310318972558587586}
     - targetCorrespondingSourceObject: {fileID: -7593933312008015630, guid: 8c3db546cbe65fd4790e1c51595f8409, type: 3}
       insertIndex: -1
       addedObject: {fileID: 342286828263168925}
@@ -872,6 +903,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8513756712193345162, guid: 8c3db546cbe65fd4790e1c51595f8409, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7206726202198102888}
+    - targetCorrespondingSourceObject: {fileID: -8513756712193345162, guid: 8c3db546cbe65fd4790e1c51595f8409, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1310318972558587586}
     - targetCorrespondingSourceObject: {fileID: 8646106170544181822, guid: 8c3db546cbe65fd4790e1c51595f8409, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5004919197868753077}
@@ -887,7 +921,7 @@ PrefabInstance:
       addedObject: {fileID: 7076103623571696766}
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 8c3db546cbe65fd4790e1c51595f8409, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4702666533860337207}
+      addedObject: {fileID: 5179625882114596428}
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 8c3db546cbe65fd4790e1c51595f8409, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1108285023777545557}
@@ -1166,15 +1200,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterType: 1
-  _maxHealth: 30
+  _maxHealth: 150
   __impactDamage: 0
-  _particleEffectTag: 
-  _soundEffectTag: 
+  _particleEffectTag: EnemyDestroyedSpider
+  _deathSoundEffectTag: SpiderDeathEffect
+  _hurtSoundEffectTag: SpiderHurtEffect
   _collisionIgnore: Enemy
   _deadLayer: Dead
   _animator: {fileID: 3070047129465562425}
   currentHealth: 0
---- !u!114 &4702666533860337207
+--- !u!114 &5179625882114596428
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1183,12 +1218,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8201584747057486210}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad7a7c2797e46604abd4999eab22b6a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 93e41426f58b2f44ba323c59c139b96b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   moveSpeed: 0.95
-  detectRange: 12
+  climbSpeed: 1.3
+  jumpForce: 3
+  detectRange: 20
   attackRange: 2.8
   stopRange: 2.8
   backoffRange: 2
@@ -1196,13 +1233,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   groundCheck: {fileID: 5990261030587438512}
+  frontCheck: {fileID: 6351978224189928813}
   groundCheckRadius: 0.2
+  frontCheckDistance: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
   weapon: {fileID: 1108285023777545557}
   animators:
   - {fileID: 3070047129465562425}
+  _detectSoundEffect: SpiderOnAttackEffect
   currentState: 0
   previousState: 0
 --- !u!114 &1108285023777545557
@@ -1218,11 +1258,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _primaryWeaponList:
-  - {fileID: 11400000, guid: df408270be883ac4d84b4a9f9e84caae, type: 2}
+  - {fileID: 11400000, guid: 6e0d9787df47ab843b648939a77d1cd7, type: 2}
   _weaponSpawnPoints:
   - spawnLocations:
     - {fileID: 1310318972558587586}
-    weaponTypeTag: BatWeapon
+    weaponTypeTag: SpiderWeapon
+  _weaponProjectileParentTag: ProjectileParent
   _weaponTarget: PlayerTarget
 --- !u!50 &2912879499354899996
 Rigidbody2D:

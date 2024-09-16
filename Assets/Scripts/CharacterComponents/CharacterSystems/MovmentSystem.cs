@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MovmentSystem : CharacterSystems, IMovable
@@ -11,10 +12,12 @@ public class MovmentSystem : CharacterSystems, IMovable
 
     [SerializeField] protected float _jumpForce = 5f;
     [SerializeField] protected float _jumpAnticipationTime;
+    [SerializeField] protected float _runningJumpMultiplier = 1.5f;
 
     [SerializeField] protected Animator _animator;
     [SerializeField] protected GroundCheck groundCheck;
-    [SerializeField] protected CharcterAim charcterAim;
+
+    protected CharcterAim _charcterAim;
 
     private bool _isRunning;
     private bool _isCrouching;
@@ -37,7 +40,7 @@ public class MovmentSystem : CharacterSystems, IMovable
     {
         base.Start();
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        charcterAim = GetComponent<CharcterAim>();
+        _charcterAim = GetComponent<CharcterAim>();
 
         if (groundCheck != null)
         {
@@ -48,11 +51,13 @@ public class MovmentSystem : CharacterSystems, IMovable
     private void OnEnable()
     {
         _eventManager.IsFacingRight += SetDirection;
+        _eventManager.OnCharacterDestroyed += OnCharacterDie;
     }
 
     private void OnDisable()
     {
         _eventManager.IsFacingRight -= SetDirection;
+        _eventManager.OnCharacterDestroyed -= OnCharacterDie;
     }
 
     private void SetDirection(bool isFacingRight)
@@ -73,17 +78,25 @@ public class MovmentSystem : CharacterSystems, IMovable
         if (_isGrounded)
         {
             adjustedSpeed = GetCharacterSpeed();
-            _lastGroundSpeed = adjustedSpeed; // Save ground speed before jumping
+            _lastGroundSpeed = adjustedSpeed; 
         }
         else
         {
-            adjustedSpeed = _lastGroundSpeed; // Preserve last known ground speed in the air
+            adjustedSpeed = _lastGroundSpeed; 
         }
 
-        // Only apply horizontal velocity when grounded or when there's player input while in the air
         if (_isGrounded || Mathf.Abs(_horizontal) > 0.01f)
         {
             _rigidbody2D.velocity = new Vector2(_horizontal * adjustedSpeed, _rigidbody2D.velocity.y);
+        }
+    }
+
+    private void OnCharacterDie(CharacterType characterType, Character character, Vector3 pos)
+    {
+        if(characterType == CharacterType.Player)
+        {
+            _animator.SetTrigger("isDead");
+            this.enabled = false;
         }
     }
 
@@ -91,7 +104,6 @@ public class MovmentSystem : CharacterSystems, IMovable
     {
         bool wasGrounded = _isGrounded;
         _isGrounded = groundCheck.IsGrounded;
-
 
         if (!wasGrounded && !_isGrounded && !_isJumping)
         {
@@ -103,10 +115,11 @@ public class MovmentSystem : CharacterSystems, IMovable
             _animator.SetBool("isFalling", false);
         }
     }
+
     private void StartFalling()
     {
         _animator.SetBool("isFalling", true);
-        _isJumping = false; 
+        _isJumping = false;
     }
 
     private void UpdateAnimation()
@@ -120,16 +133,13 @@ public class MovmentSystem : CharacterSystems, IMovable
         _animator.SetBool("isGrounded", _isGrounded);
         _animator.SetBool("isWalkingBackwards", IsWalkingBackWards());
         _animator.SetFloat("PlayerInput", Mathf.Abs(_horizontal));
-      //  _animator.SetBool("isFalling", !_isGrounded && !_isJumping);
-
-
     }
 
     private bool IsCharacterRunning()
     {
         if (_isRunning && _isGrounded)
         {
-            if ((_isFacingRight && _horizontal > 0) || (!charcterAim.IsFacingRight && _horizontal < 0))
+            if ((_isFacingRight && _horizontal > 0) || (!_charcterAim.IsFacingRight && _horizontal < 0))
             {
                 return true;
             }
@@ -139,7 +149,7 @@ public class MovmentSystem : CharacterSystems, IMovable
 
     private bool IsWalkingBackWards()
     {
-        if ((_isFacingRight && _horizontal < 0) || (!charcterAim.IsFacingRight && _horizontal > 0))
+        if ((_isFacingRight && _horizontal < 0) || (!_charcterAim.IsFacingRight && _horizontal > 0))
         {
             return true;
         }
@@ -150,7 +160,7 @@ public class MovmentSystem : CharacterSystems, IMovable
     {
         if (_isGrounded && !_isRunning && _isCrouching)
         {
-            if ((_isFacingRight && _horizontal > 0) || (!charcterAim.IsFacingRight && _horizontal < 0))
+            if ((_isFacingRight && _horizontal > 0) || (!_charcterAim.IsFacingRight && _horizontal < 0))
             {
                 return true;
             }
@@ -162,7 +172,7 @@ public class MovmentSystem : CharacterSystems, IMovable
     {
         if (_isRunning && _isGrounded)
         {
-            if ((_isFacingRight && _horizontal > 0) || (!charcterAim.IsFacingRight && _horizontal < 0))
+            if ((_isFacingRight && _horizontal > 0) || (!_charcterAim.IsFacingRight && _horizontal < 0))
             {
                 return _speed * _runSpeedMultiplier;
             }
@@ -178,7 +188,8 @@ public class MovmentSystem : CharacterSystems, IMovable
         else if (IsWalkingBackWards() && _isCrouching)
         {
             return 0f;
-        }else if(_isRunning && !_isGrounded)
+        }
+        else if (_isRunning && !_isGrounded)
         {
             return _speed * _runSpeedMultiplier;
         }
@@ -205,18 +216,25 @@ public class MovmentSystem : CharacterSystems, IMovable
     {
         if (_isGrounded && !_isJumping && !_isCrouching)
         {
-            _lastGroundSpeed = _horizontal * _speed; // Store horizontal velocity when jumping
-            StartCoroutine(JumpRoutine());
+            _lastGroundSpeed = _horizontal * _speed; 
+
+            float jumpForce = _jumpForce;
+            if (_isRunning)
+            {
+                jumpForce *= _runningJumpMultiplier; 
+            }
+
+            StartCoroutine(JumpRoutine(jumpForce));
         }
     }
 
-    private IEnumerator JumpRoutine()
+    private IEnumerator JumpRoutine(float jumpForce)
     {
         _isJumping = true;
 
         yield return new WaitForSeconds(_jumpAnticipationTime);
 
-        _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _jumpForce);
+        _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jumpForce);
         _isGrounded = false;
         _isJumping = false;
     }

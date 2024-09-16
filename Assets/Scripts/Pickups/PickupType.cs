@@ -7,5 +7,6 @@ public enum PickupType
     PrimaryWeaponPickup,
     SecondaryWeaponPickup,
     HealthPickup,
-    ModPickup   
+    ModPickup,
+    SecondaryAmmo
 }
