@@ -8,20 +8,13 @@ using UnityEngine.UI;
 public class UIPause : MonoBehaviour
 {
     [SerializeField] protected Button _menuButton;
-    [SerializeField] protected Button _quitButton;
 
-    private EventManager _eventManager;
+    private GameManager _gameManager;
 
-    private bool _isPaused;
-
-    private void Awake()
-    {
-        _eventManager = EventManager.Instance;
-    }
     private void Start()
     {
         _menuButton.onClick.AddListener(OnPlayButtonClicked);
-        _quitButton.onClick.AddListener(OnQuitButtonClicked);
+        _gameManager = GameManager.Instance;
 
         this.gameObject.SetActive(false);
     }
@@ -29,12 +22,7 @@ public class UIPause : MonoBehaviour
 
     private void OnPlayButtonClicked()
     {
-        SceneManager.LoadScene("MainMenu");
-    }
-
-    private void OnQuitButtonClicked()
-    {
-        Application.Quit();
+        _gameManager.ReturnToMainMenu();
     }
 
 }

@@ -56,7 +56,6 @@ public class ProjectileWeapon : Weapon
             {
                 ObjectPoolSystem<MuzzleFlash>.Instance.AddPool(_poolSize, _muzzleFlashPrefab._poolTag, _muzzleFlashPrefab, _projectileParent);
                 muzzleFlash = ObjectPoolSystem<MuzzleFlash>.Instance.GetObject(_muzzleFlashPrefab._poolTag);
-                Debug.Log("In add pool muzzleflash");
 
             }
             else
@@ -72,14 +71,12 @@ public class ProjectileWeapon : Weapon
             }
 
 
-
             Projectile nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject(_weaponObjectPoolTag);
 
             if (nextProjectile == null)
             {
                 ObjectPoolSystem<Projectile>.Instance.AddPool(_poolSize, _weaponObjectPoolTag, _projectilePrefab, _projectileParent);
                 nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject(_weaponObjectPoolTag);
-                Debug.Log("In add pool projectile");
             }
 
 
@@ -94,8 +91,6 @@ public class ProjectileWeapon : Weapon
                 Debug.Log("Couldnt get projectile");
             }
         }
-        
-
     }
 
 
@@ -140,7 +135,6 @@ public class ProjectileWeapon : Weapon
 
     private void AddMod(WeaponMod mod)
     {
-
         _currentWeaponDamage += mod.DamageModifier;
 
         _currentWeaponCooldown -= mod.FireRateModifier;
@@ -153,14 +147,5 @@ public class ProjectileWeapon : Weapon
         _currentWeaponRange += mod.RangeModifier;
 
         _currentWeaponSpeed += mod.SpeedModifier;
-
-        DisplayCurrentStatsDebug();
-     
-    }
-  
-
-    private void DisplayCurrentStatsDebug()
-    {
-      //  Debug.Log($"CUrrent stats/n Damage {_currentWeaponDamage}/n Cooldown {_currentWeaponCooldown}/n Accuracy {_currentAccuracy}/n Magazine {_currentMagazineSize}/n Range {_currentWeaponRange} Speed {_currentWeaponSpeed}");
     }
 }

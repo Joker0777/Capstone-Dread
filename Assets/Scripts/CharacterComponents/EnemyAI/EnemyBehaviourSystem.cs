@@ -152,7 +152,7 @@ public class EnemyBehaviourSystem : CharacterSystems
             stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         }
 
-         Destroy(gameObject,10);
+       //  Destroy(gameObject,5);
     }
 
     protected bool InRangeOfTarget(float range, GameObject target)
@@ -162,7 +162,7 @@ public class EnemyBehaviourSystem : CharacterSystems
 
     private void Patrol()
     {
-        moveDirection = Vector2.zero; // No movement during patrol
+        moveDirection = Vector2.zero; 
 
         if (InRangeOfTarget(detectRange, target))
         {
@@ -194,27 +194,24 @@ public class EnemyBehaviourSystem : CharacterSystems
         {
             float distance = Vector2.Distance(transform.position, target.transform.position);
 
-            // Map the distance to a value between 0 (close) and 1 (far) for the blend tree
             float blendValue = Mathf.InverseLerp(backoffRange, attackRange, distance);
 
-            // Update the blend tree parameter in the animator
             foreach (var animator in animators)
             {
                 animator.SetFloat("attackRange", blendValue);
             }
 
-            // Backoff if player is too close
             if (distance <= backoffRange)
             {
-                currentState = EnemyState.Backoff;  // Transition to backoff state
+                currentState = EnemyState.Backoff;  
             }
             else if (distance <= stopRange)
             {
-                rb.velocity = new Vector2(0, rb.velocity.y); // Stop movement
+                rb.velocity = new Vector2(0, rb.velocity.y); 
             }
             else
             {
-                MoveTowardsTarget(); // Move towards target if not in stop range
+                MoveTowardsTarget(); 
             }
 
             if (!InRangeOfTarget(attackRange, target))
@@ -230,13 +227,10 @@ public class EnemyBehaviourSystem : CharacterSystems
         {
             float distanceToTarget = target.transform.position.x - transform.position.x;
 
-            // Move away from the target without flipping direction
-            moveDirection = new Vector2(-Mathf.Sign(distanceToTarget), 0);  // Move in the opposite direction
+            moveDirection = new Vector2(-Mathf.Sign(distanceToTarget), 0);
             rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
 
-            // Do not flip the sprite in backoff
-
-            // Transition back to Attack or Detect state if distance increases
+ 
             if (Vector2.Distance(target.transform.position, transform.position) > backoffRange)
             {
                 if (InRangeOfTarget(attackRange, target))
@@ -267,21 +261,18 @@ public class EnemyBehaviourSystem : CharacterSystems
             float distanceToTarget = target.transform.position.x - transform.position.x;
             moveDirection = new Vector2(Mathf.Sign(distanceToTarget), 0);
 
-            // Check for obstacles ahead
             bool obstacleAhead = Physics2D.Raycast(frontCheck.position, Vector2.right, frontCheckDistance, groundLayer);
             if (obstacleAhead)
             {
-                rb.velocity = Vector2.zero; // Stop movement if an obstacle is detected
-                return; // Exit the method to prevent movement
+                rb.velocity = Vector2.zero;
+                return; 
             }
 
             rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
-
-            // Flip enemy sprite based on direction (only when moving towards target)
             if (moveDirection.x > 0)
-                transform.localScale = new Vector3(-1, 1, 1); // Facing right
+                transform.localScale = new Vector3(-1, 1, 1);
             else if (moveDirection.x < 0)
-                transform.localScale = new Vector3(1, 1, 1); // Facing left
+                transform.localScale = new Vector3(1, 1, 1);
         }
     }
 
@@ -289,11 +280,11 @@ public class EnemyBehaviourSystem : CharacterSystems
     {
         foreach (var animator in animators)
         {
-            float movementType = 0.5f; // Default to walking
+            float movementType = 0.5f; 
 
             if (currentState == EnemyState.Backoff)
             {
-                movementType = 0.5f; // Walking backwards
+                movementType = 0.5f; 
             }
 
             animator.SetFloat("MovementType", movementType);

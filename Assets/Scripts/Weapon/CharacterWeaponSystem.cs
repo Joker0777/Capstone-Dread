@@ -50,8 +50,6 @@ public class CharacterWeaponSystem : CharacterSystems
     protected Timer _primaryCooldownTimer;
     protected Timer _secondaryCooldownTimer;
 
-    protected float _fireRateIncreaseFactor = 1f;
-
     [SerializeField] protected GameObject[] _weaponVisuals;
 
 
@@ -59,12 +57,12 @@ public class CharacterWeaponSystem : CharacterSystems
     [SerializeField] protected GunPositonAdjust _gunPositonAdjust;
 
 
-    public float WeaponCooldown
+    public float PrimaryWeaponCooldown
     {
         get => _currentPrimaryWeaponCooldown;
         set
         {
-            _currentPrimaryWeaponCooldown = value / _fireRateIncreaseFactor;
+            _currentPrimaryWeaponCooldown = value;
             if (_primaryCooldownTimer != null)
             {
                 _primaryCooldownTimer.TimerDuration = _currentPrimaryWeaponCooldown;
@@ -72,13 +70,16 @@ public class CharacterWeaponSystem : CharacterSystems
         }
     }
 
-    public float FireRateIncreaseFactor
+    public float SecondaryWeaponCooldown
     {
-        get => _fireRateIncreaseFactor;
+        get => _currentSecondaryWeaponCooldown;
         set
         {
-            _fireRateIncreaseFactor = value;
-            WeaponCooldown = _currentPrimaryWeaponCooldown;
+            _currentSecondaryWeaponCooldown = value;
+            if (_secondaryCooldownTimer != null)
+            {
+                _secondaryCooldownTimer.TimerDuration = _currentSecondaryWeaponCooldown;
+            }
         }
     }
 
@@ -86,31 +87,60 @@ public class CharacterWeaponSystem : CharacterSystems
     {
         base.Start();
 
+        InitializeTimers();
+        InitializeUI();
+        //  _eventManager.OnGameSceneStart += InitializePlayer;
+        InitializeWeaponLists();
+    }
+
+    private void InitializeTimers()
+    {
         _primaryCooldownTimer = new Timer(_currentPrimaryWeaponCooldown);
         _secondaryCooldownTimer = new Timer(_currentSecondaryWeaponCooldown);
+    }
+
+    private void InitializeUI()
+    {
         _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeapon, "None");
         _eventManager.OnUIChange?.Invoke(UIElementType.BarrelMod, "0");
         _eventManager.OnUIChange?.Invoke(UIElementType.ScopeMod, "0");
         _eventManager.OnUIChange?.Invoke(UIElementType.GripMod, "0");
+    }
 
-        InitializeWeaponLists();
+    private void InitializeWeaponLists()
+    {
+        InitializeWeapon(_primaryWeaponList, ref _currentPrimaryWeapon, ref _currentPrimaryWeaponVisual, ref _currentWeaponIndex);
+        InitializeWeapon(_secondaryWeaponList, ref _currentSecondaryWeapon, ref _currentSecondaryWeaponVisual, ref _currentSecondaryWeaponIndex);
+
+        UpdateUI();
+    }
+
+    private void InitializePlayer()
+    {
+        _primaryCooldownTimer.StopTimerCoroutine();
+        _secondaryCooldownTimer.StopTimerCoroutine();
     }
     private void OnEnable()
     {
         _eventManager.OnCharacterDestroyed += OnCharacterDie;
+        _eventManager.OnGameSceneStart += InitializePlayer;
+
     }
 
     private void OnDisable()
     {
         _eventManager.OnCharacterDestroyed -= OnCharacterDie;
+        _eventManager.OnGameSceneStart -= InitializePlayer;
     }
+
+
 
     private void OnCharacterDie(CharacterType characterType, Character character, Vector3 position)
     {
-        this.enabled = false;
+      //  this.enabled = false;
     }
 
-    private void InitializeWeaponLists()
+  /*  private void InitializeWeaponLists()
     {
         if (_primaryWeaponList.Count > 0)
         {
@@ -118,19 +148,52 @@ public class CharacterWeaponSystem : CharacterSystems
             _currentPrimaryWeaponVisual = Instantiate(_currentPrimaryWeapon.WeaponVisual, _weaponVisualTransform.position, _weaponVisualTransform.rotation, _weaponVisualTransform);
             _currentPrimaryWeaponVisual.transform.localPosition = Vector3.zero;
             _currentPrimaryWeapon.InitializeWeapon();
+
         }
 
         if (_secondaryWeaponList.Count > 0)
         {
             _currentSecondaryWeapon = _secondaryWeaponList[_currentSecondaryWeaponIndex];
+            _currentSecondaryWeaponVisual = Instantiate(_currentSecondaryWeapon.WeaponVisual, _weaponVisualTransform.position, _weaponVisualTransform.rotation, _weaponVisualTransform);
+            _currentSecondaryWeaponVisual.transform.localPosition = Vector3.zero;
+            _currentSecondaryWeapon.InitializeWeapon();
         }
+    
 
         _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeapon, _currentPrimaryWeapon.name);
         _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeaponAmmo, _currentPrimaryWeapon.CurrrentAmmo.ToString() + "/" + _currentPrimaryWeapon.CurrentMagazineSize.ToString());
+
+    }  */
+    private void InitializeWeapon(List<ProjectileWeapon> weaponList, ref ProjectileWeapon currentWeapon, ref GameObject currentVisuals, ref int currentIndex)
+    {
+        if (weaponList.Count > 0)
+        {
+            currentWeapon = weaponList[currentIndex];
+            currentVisuals = Instantiate(currentWeapon.WeaponVisual, _weaponVisualTransform.position, _weaponVisualTransform.rotation, _weaponVisualTransform);
+            currentVisuals.transform.localPosition = Vector3.zero;
+            currentWeapon.InitializeWeapon();
+        }
     }
 
+    private void UpdateUI()
+    {
+        if (_currentPrimaryWeapon != null)
+        {
+            _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeapon, _currentPrimaryWeapon.name);
+            _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeaponAmmo, GetAmmoText(_currentPrimaryWeapon));
+        }
+
+        if (_currentSecondaryWeapon != null)
+        {
+            _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeapon, _currentSecondaryWeapon.name);
+            _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeaponAmmo, GetAmmoText(_currentSecondaryWeapon));
+        }
+    }
+    private string GetAmmoText(ProjectileWeapon weapon) => $"{weapon.CurrrentAmmo}/{weapon.CurrentMagazineSize}";
 
 
+
+    //ADD NEW WEAPONS
     public void AddWeapon(ProjectileWeapon addedWeapon, List<ProjectileWeapon> weaponList, ref ProjectileWeapon currentWeapon, ref GameObject currentVisuals)
     {
         if (addedWeapon != null && !weaponList.Contains(addedWeapon))
@@ -159,115 +222,79 @@ public class CharacterWeaponSystem : CharacterSystems
         addedWeapon.InitializeWeapon();
         if (_secondaryWeaponList.Count == 1)
         {
-            _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeapon, _currentSecondaryWeapon.name);
-            _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeaponAmmo, _currentSecondaryWeapon.CurrrentAmmo.ToString() + "/" + _currentSecondaryWeapon.CurrentMagazineSize.ToString());
+            UpdateUI();
         }
     }
 
 
 
 
+
+    //ADD MODS
     public void AddMod(WeaponMod addedMod)
     {
-
         if (addedMod == null) return;
 
         switch (addedMod.ModType)
         {
             case ModType.Barrel:
-                if (!_barrelModsList.Contains(addedMod))
-                {
-                    _barrelModsList.Add(addedMod);
-                    if(_barrelModsList.Count == 1)
-                    {
-                        _currentBarrelMod = _barrelModsList[0];
-                        
-                    }
-                    _eventManager.OnUIChange?.Invoke(UIElementType.BarrelMod, _barrelModsList.Count.ToString());
-                }
-
+                AddModToList(addedMod, _barrelModsList, ref _currentBarrelMod, UIElementType.BarrelMod);
                 break;
 
             case ModType.Sight:
-                if (!_sightModsList.Contains(addedMod))
-                {
-                    _sightModsList.Add(addedMod);
-                    if(_sightModsList.Count == 1)
-                    {
-                        _currentSightMod = _sightModsList[0];
-                    }
-                    _eventManager.OnUIChange?.Invoke(UIElementType.ScopeMod, _sightModsList.Count.ToString());
-                }
-
+                AddModToList(addedMod, _sightModsList, ref _currentSightMod, UIElementType.ScopeMod);
                 break;
 
             case ModType.Grip:
-                if (!_gripModsList.Contains(addedMod))
-                {
-                    _gripModsList.Add(addedMod);
-                    if(_gripModsList.Count == 1)
-                    {
-                        _currentGripMod = _gripModsList[0];
-                    }
-                    _eventManager.OnUIChange?.Invoke(UIElementType.GripMod, _gripModsList.Count.ToString());
-                }
-
+                AddModToList(addedMod, _gripModsList, ref _currentGripMod, UIElementType.GripMod);
                 break;
         }
+
         UpdateWeaponMods();
+    }
+
+    private void AddModToList(WeaponMod mod, List<WeaponMod> modList, ref WeaponMod currentMod, UIElementType uiElementType)
+    {
+        if (!modList.Contains(mod))
+        {
+            modList.Add(mod);
+            if (modList.Count == 1)
+            {
+                currentMod = mod;
+            }
+            _eventManager.OnUIChange?.Invoke(uiElementType, modList.Count.ToString());
+        }
     }
 
     private void UpdateWeaponMods()
     {
-        _currentPrimaryWeapon.ClearMods();
+        ApplyWeaponMod(_currentGripMod, ref _currentGripVisual);
+        ApplyWeaponMod(_currentBarrelMod, ref _currentBarrelVisual);
+        ApplyWeaponMod(_currentSightMod, ref _currentSightVisual);
+    }
 
-        if (_currentGripMod != null)
+    private void ApplyWeaponMod(WeaponMod mod, ref GameObject modVisual)
+    {
+        if (mod != null)
         {
-            _currentPrimaryWeapon.ApplyMod(_currentGripMod);
-
-            if (_currentGripVisual != null)
+            _currentPrimaryWeapon.ApplyMod(mod);
+            if (modVisual != null)
             {
-                Destroy(_currentGripVisual);
+                Destroy(modVisual);
             }
-            _currentGripVisual = Instantiate(_currentGripMod.ModVisual, _weaponVisualTransform.position, _weaponVisualTransform.rotation, _weaponVisualTransform);
-            _currentGripVisual.transform.localPosition = Vector3.zero;
-            _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeaponAmmo, _currentPrimaryWeapon.CurrrentAmmo.ToString() + "/" + _currentPrimaryWeapon.CurrentMagazineSize.ToString());
-        }
-
-        if (_currentBarrelMod != null)
-        {
-            _currentPrimaryWeapon.ApplyMod(_currentBarrelMod);
-
-            if (_currentBarrelVisual != null)
-            {
-                Destroy(_currentBarrelVisual);
-            }
-            _currentBarrelVisual = Instantiate(_currentBarrelMod.ModVisual, _weaponVisualTransform.position, _weaponVisualTransform.rotation, _weaponVisualTransform);
-            _currentBarrelVisual.transform.localPosition = Vector3.zero;
-        }
-
-        if (_currentSightMod != null)
-        {
-            _currentPrimaryWeapon.ApplyMod(_currentSightMod);
-
-            if (_currentSightVisual != null)
-            {
-                Destroy(_currentSightVisual);
-            }
-            _currentSightVisual = Instantiate(_currentSightMod.ModVisual, _weaponVisualTransform.position, _weaponVisualTransform.rotation, _weaponVisualTransform);
-            _currentSightVisual.transform.localPosition = Vector3.zero;
+            modVisual = Instantiate(mod.ModVisual, _weaponVisualTransform.position, _weaponVisualTransform.rotation, _weaponVisualTransform);
+            modVisual.transform.localPosition = Vector3.zero;
+            _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeaponAmmo, GetAmmoText(_currentPrimaryWeapon));
         }
     }
 
 
 
-
-
+    //FIRE WEAPONS
     public void FirePrimaryWeapon()
     {
         if (_isReloading || _primaryCooldownTimer.IsRunningCoroutine || _currentPrimaryWeapon.CurrrentAmmo <= 0) return;
-
-        FireWeaponLogic(_currentPrimaryWeapon, ref _primaryWeaponSpawnPointIndex, _primaryCooldownTimer);
+        PrimaryWeaponLogic(_currentPrimaryWeapon, ref _primaryWeaponSpawnPointIndex, _primaryCooldownTimer);
     }
 
     public void StopPrimaryWeapon()
@@ -277,20 +304,20 @@ public class CharacterWeaponSystem : CharacterSystems
 
     public void FireSecondaryWeapon()
     {
-        if (_secondaryCooldownTimer.IsRunningCoroutine || _currentSecondaryWeapon.CurrrentAmmo <=0) return;
-
-        FireWeaponLogic(_currentSecondaryWeapon, _secondaryWeaponSpawnPoint, _secondaryCooldownTimer);
+        if (_secondaryWeaponList.Count == 0 ||_secondaryCooldownTimer.IsRunningCoroutine || _currentSecondaryWeapon.CurrrentAmmo <=0  ) return;
+        SecondaryWeaponLogic(_currentSecondaryWeapon, _secondaryWeaponSpawnPoint, _secondaryCooldownTimer);
     }
 
-    private void FireWeaponLogic(ProjectileWeapon weapon, ref int spawnPointIndex, Timer cooldownTimer)
+    private void PrimaryWeaponLogic(ProjectileWeapon weapon, ref int spawnPointIndex, Timer cooldownTimer)
     {
+        Debug.Log("In primary weapon logic" + weapon.name);
         if (weapon == null)
         {
             Debug.LogWarning("Current weapon is null, cannot fire weapon.");
             return;
         }
 
-        SetUpWeapon(weapon.WeaponType);
+        SetUpPrimaryWeapon(weapon.WeaponType);
 
         if (_currentWeaponSpawnPoints == null || _currentWeaponSpawnPoints.Length == 0)
         {
@@ -308,14 +335,14 @@ public class CharacterWeaponSystem : CharacterSystems
         }
 
         weapon.UseWeapon(weaponSpawn, _weaponTarget);
+        _eventManager.OnWeaponFired?.Invoke(_currentPrimaryWeapon.ShellCasingTag, _currentPrimaryWeapon.WeaponCooldown);
         _eventManager.OnPlaySoundEffect?.Invoke(weapon.name + "Effect", weaponSpawn.position);
-        _eventManager.OnWeaponFired?.Invoke(_currentPrimaryWeapon.ShellCasingTag, _currentPrimaryWeaponCooldown);
-        _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeaponAmmo, _currentPrimaryWeapon.CurrrentAmmo.ToString() + "/" + _currentPrimaryWeapon.CurrentMagazineSize.ToString());
+        UpdateUI();
 
         cooldownTimer.StartTimerCoroutine();
     }
 
-    private void FireWeaponLogic(ProjectileWeapon weapon, Transform weaponSpawnPoint, Timer cooldownTimer)
+    private void SecondaryWeaponLogic(ProjectileWeapon weapon, Transform weaponSpawnPoint, Timer cooldownTimer)
     {
         if (weapon == null)
         {
@@ -323,29 +350,36 @@ public class CharacterWeaponSystem : CharacterSystems
             return;
         }
 
-        SetUpWeapon(weapon.WeaponType);
+        SetUpSecondaryWeapon();
 
         weapon.UseWeapon(weaponSpawnPoint, _weaponTarget);
         _eventManager.OnPlaySoundEffect?.Invoke(weapon.name + "Effect", weaponSpawnPoint.position);
         cooldownTimer.StartTimerCoroutine();
-        _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeaponAmmo, _currentSecondaryWeapon.CurrrentAmmo.ToString() + "/" + _currentSecondaryWeapon.CurrentMagazineSize.ToString());
+        UpdateUI();
     }
 
 
-    protected void SetUpWeapon(string weaponType)
+    protected void SetUpPrimaryWeapon(string weaponType)
     {
         foreach (var weaponSpawn in _weaponSpawnPoints)
         {
             if (weaponSpawn.WeaponTypeTag == weaponType)
             {
                 _currentWeaponSpawnPoints = weaponSpawn.SpawnLocations;
-                WeaponCooldown = _currentPrimaryWeapon.WeaponCooldown;
+                PrimaryWeaponCooldown = _currentPrimaryWeapon.WeaponCooldown;
                 return;
             }
         }
         Debug.LogWarning("No matching weapon type found for: " + weaponType);
     }
 
+    protected void SetUpSecondaryWeapon()
+    {
+        SecondaryWeaponCooldown = _currentSecondaryWeapon.WeaponCooldown;
+    }
+
+
+    //GET SECONDARY AMMO
     public void AddSecondaryAmmo(ProjectileWeapon projectileWeapon, int secondaryAmmoAmmount)
     {
         if (projectileWeapon != null && _secondaryWeaponList.Contains(projectileWeapon))
@@ -355,12 +389,14 @@ public class CharacterWeaponSystem : CharacterSystems
             if (secondaryWeapon != null)
             {
                 secondaryWeapon.AddAmmo(secondaryAmmoAmmount);
-                _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeaponAmmo, _currentSecondaryWeapon.CurrrentAmmo.ToString() + "/" + _currentSecondaryWeapon.CurrentMagazineSize.ToString());
+                UpdateUI();
             }
         }
     }
 
 
+
+    //WEAPON SWITCHING
     public void SwitchWeapon(int switchDirection, List<ProjectileWeapon> weaponList, ref ProjectileWeapon currentWeapon, ref int currentIndex)
     {
         if (weaponList.Count == 0) return;
@@ -381,8 +417,7 @@ public class CharacterWeaponSystem : CharacterSystems
         _currentPrimaryWeaponVisual = Instantiate(_currentPrimaryWeapon.WeaponVisual, _weaponVisualTransform.position, _weaponVisualTransform.rotation, _weaponVisualTransform);
         _currentPrimaryWeaponVisual.transform.localPosition = Vector3.zero;
         UpdateWeaponMods();
-        _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeapon, _currentPrimaryWeapon.name);
-        _eventManager.OnUIChange?.Invoke(UIElementType.PrimaryWeaponAmmo, _currentPrimaryWeapon.CurrrentAmmo.ToString() + "/" + _currentPrimaryWeapon.CurrentMagazineSize.ToString());
+        UpdateUI();
     }
 
     public void SwitchSecondaryWeapon(int switchDirection)
@@ -396,10 +431,11 @@ public class CharacterWeaponSystem : CharacterSystems
         }
         _currentSecondaryWeaponVisual = Instantiate(_currentSecondaryWeapon.WeaponVisual, _weaponVisualTransform.position, _weaponVisualTransform.rotation, _weaponVisualTransform);
         _currentSecondaryWeaponVisual.transform.localPosition = Vector3.zero;
-        _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeapon, _currentSecondaryWeapon.name);
-        _eventManager.OnUIChange?.Invoke(UIElementType.SecondaryWeaponAmmo, _currentSecondaryWeapon.CurrrentAmmo.ToString() + "/" + _currentSecondaryWeapon.CurrentMagazineSize.ToString());
+        UpdateUI();
     }
 
+
+    //RELOAD PRIMARY WEAPON
     public void ReloadPrimaryWeapon()
     {
         if (_currentPrimaryWeapon.CurrrentAmmo < _currentPrimaryWeapon.CurrentMagazineSize)

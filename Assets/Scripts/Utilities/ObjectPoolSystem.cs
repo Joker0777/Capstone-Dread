@@ -32,7 +32,7 @@ public class ObjectPoolSystem<T> where T : MonoBehaviour
         ResetObjectPools();
     }
 
-    private void ResetObjectPools()
+    public void ResetObjectPools()
     {
         foreach (var objectPool in _objectPools.Values)
         {
@@ -43,6 +43,14 @@ public class ObjectPoolSystem<T> where T : MonoBehaviour
         {
             objectPool.CreatePool();
         }
+    }
+    public void ClearAllPools()
+    {
+        foreach (var objectPool in _objectPools.Values)
+        {
+            objectPool.Clear();
+        }
+        _objectPools.Clear();
     }
 
     public void AddPool(int size, string name, T obj, Transform parent)

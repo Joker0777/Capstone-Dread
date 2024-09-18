@@ -16,7 +16,7 @@ MonoBehaviour:
   _weaponObjectPoolTag: SlimeWeapon
   _weaponCooldown: 0.5
   _currentWeaponCooldown: 0
-  damage: 5
+  damage: 10
   attackRange: 3
   targetLayer:
     serializedVersion: 2

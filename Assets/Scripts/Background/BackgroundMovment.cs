@@ -27,12 +27,12 @@ public class BackgroundMovment : MonoBehaviour
 
         transform.position = new Vector3(_startPos + distance, transform.position.y, transform.position.z);
 
-        // Fix the boundary condition
+
         if (temp > _startPos + _length)
         {
             _startPos += _length;
         }
-        else if (temp < _startPos - _length) // Fix comparison to avoid flicker
+        else if (temp < _startPos - _length) 
         {
             _startPos -= _length;
         }

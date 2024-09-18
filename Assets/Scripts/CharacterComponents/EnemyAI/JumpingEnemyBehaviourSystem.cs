@@ -12,17 +12,17 @@ public class JumpingEnemyBehaviourSystem : CharacterSystems
 
 
     [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] private float jumpForce = 5f;  // Jump force for the enemy
+    [SerializeField] private float jumpForce = 5f; 
     [SerializeField] private float detectRange = 10f;
     [SerializeField] private float attackRange = 7f;
     [SerializeField] private float stopRange = 5f;
     [SerializeField] private float backoffRange = 2f;
-    [SerializeField] private float obstacleCheckDistance = 1.0f;  // Distance to detect obstacles
+    [SerializeField] private float obstacleCheckDistance = 1.0f;  
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Transform frontCheck;  // Position to check for obstacles
+    [SerializeField] private Transform frontCheck; 
     [SerializeField] private WeaponSystem weapon;
     [SerializeField] private Animator[] animators;
     [SerializeField] private string _detectSoundEffect;
@@ -152,8 +152,8 @@ public class JumpingEnemyBehaviourSystem : CharacterSystems
             stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         }
        
-        // Optionally destroy the enemy
-         Destroy(gameObject, 2);
+
+        // Destroy(gameObject, 5);
     }
 
     protected bool InRangeOfTarget(float range, GameObject target)
@@ -163,7 +163,7 @@ public class JumpingEnemyBehaviourSystem : CharacterSystems
 
     private void Patrol()
     {
-        moveDirection = Vector2.zero; // No movement during patrol
+        moveDirection = Vector2.zero; 
 
         if (InRangeOfTarget(detectRange, target))
         {
@@ -254,7 +254,7 @@ public class JumpingEnemyBehaviourSystem : CharacterSystems
             moveDirection = new Vector2(Mathf.Sign(distanceToTarget), 0);
             rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
 
-            DetectObstaclesAndJump();
+            AvoidObstacles();
 
             if (moveDirection.x > 0)
                 transform.localScale = new Vector3(1, 1, 1);
@@ -263,14 +263,13 @@ public class JumpingEnemyBehaviourSystem : CharacterSystems
         }
     }
 
-    private void DetectObstaclesAndJump()
+    private void AvoidObstacles()
     {
-        // Cast a ray forward to detect obstacles
         RaycastHit2D hit = Physics2D.Raycast(frontCheck.position, moveDirection, obstacleCheckDistance, groundLayer);
 
         if (hit.collider != null && isGrounded)
         {
-            // If an obstacle is detected and the player is higher than the enemy, jump
+  
             if (target != null && target.transform.position.y > transform.position.y + 1.0f)
             {
                 Jump();

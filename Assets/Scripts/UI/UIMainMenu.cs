@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class UIMainMenu : MonoBehaviour
 {
+    [SerializeField] SceneTransitionManager sceneTransitionManager;
+
     [SerializeField] Button _startButton;
 
     [SerializeField] Button _quitButton;
@@ -24,11 +26,17 @@ public class UIMainMenu : MonoBehaviour
         _controls.onClick.AddListener(OnControlsButtonClicked);
 
         _controlInfo.SetActive(false);
+
+        sceneTransitionManager = SceneTransitionManager.Instance;
     }
 
     private void OnStartButtonClicked()
     {
-        SceneManager.LoadScene("SampleScene");
+        if(sceneTransitionManager == null)
+        {
+            sceneTransitionManager = SceneTransitionManager.Instance;
+        }
+        sceneTransitionManager.LoadFirstScene();
     }
 
     private void OnQuitButtonClicked()

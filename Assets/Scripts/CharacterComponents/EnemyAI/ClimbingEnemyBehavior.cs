@@ -12,7 +12,7 @@ public class ClimbingEnemyBehavior : CharacterSystems
 
         [SerializeField] private float moveSpeed = 2f;
         [SerializeField] private float climbSpeed = 3f;
-        [SerializeField] private float jumpForce = 5f;  // Jump force for the enemy
+        [SerializeField] private float jumpForce = 5f; 
         [SerializeField] private float detectRange = 10f;
         [SerializeField] private float attackRange = 7f;
         [SerializeField] private float stopRange = 5f;
@@ -163,7 +163,7 @@ public class ClimbingEnemyBehavior : CharacterSystems
                 stateInfo = animator.GetCurrentAnimatorStateInfo(0);
             }
 
-             Destroy(gameObject,20);
+         //    Destroy(gameObject,5);
         }
 
         protected bool InRangeOfTarget(float range, GameObject target)
@@ -173,7 +173,7 @@ public class ClimbingEnemyBehavior : CharacterSystems
 
         private void Patrol()
         {
-            moveDirection = Vector2.zero; // No movement during patrol
+            moveDirection = Vector2.zero;
 
             if (InRangeOfTarget(detectRange, target))
             {
@@ -199,34 +199,31 @@ public class ClimbingEnemyBehavior : CharacterSystems
             }
         }
 
-        private void AttackTarget()//added blend tree stuff
+        private void AttackTarget()
         {
             if (target != null)
             {
                 float distance = Vector2.Distance(transform.position, target.transform.position);
 
-                // Map the distance to a value between 0 (close) and 1 (far) for the blend tree
                 float blendValue = Mathf.InverseLerp(backoffRange, attackRange, distance);
 
-                // Update the blend tree parameter in the animator
                 foreach (var animator in animators)
                 {
                     animator.SetFloat("attackRange", blendValue);
                 }
 
-                // Backoff if player is too close
                 if (distance <= backoffRange)
                 {
-                    currentState = EnemyState.Backoff;  // Transition to backoff state
+                    currentState = EnemyState.Backoff;
                 }
                 else if (distance <= stopRange)
                 {
-                    rb.velocity = new Vector2(0, rb.velocity.y); // Stop movement
+                    rb.velocity = new Vector2(0, rb.velocity.y);
  
                 }
                 else
                 {
-                    MoveTowardsTarget(); // Move towards target if not in stop range
+                    MoveTowardsTarget();
                 }
 
                 if (!InRangeOfTarget(attackRange, target))
@@ -242,13 +239,9 @@ public class ClimbingEnemyBehavior : CharacterSystems
             {
                 float distanceToTarget = target.transform.position.x - transform.position.x;
 
-                // Move away from the target without flipping direction
-                moveDirection = new Vector2(-Mathf.Sign(distanceToTarget), 0);  // Move in the opposite direction
+                moveDirection = new Vector2(-Mathf.Sign(distanceToTarget), 0);
                 rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
 
-                // Do not flip the sprite in backoff
-
-                // Transition back to Attack or Detect state if distance increases
                 if (Vector2.Distance(target.transform.position, transform.position) > backoffRange)
                 {
                     if (InRangeOfTarget(attackRange, target))
@@ -279,16 +272,13 @@ public class ClimbingEnemyBehavior : CharacterSystems
                 float distanceToTarget = target.transform.position.x - transform.position.x;
                 moveDirection = new Vector2(Mathf.Sign(distanceToTarget), 0);
 
-                // Use climbing speed if climbing, otherwise use normal move speed
                 float speed = _isClimbing ? climbSpeed : moveSpeed;
 
                 rb.velocity = new Vector2(moveDirection.x * speed, rb.velocity.y);
 
-                // Flip enemy sprite based on direction (only when moving towards target)
                 if (moveDirection.x > 0)
-                    transform.localScale = new Vector3(-1, 1, 1); // Facing right
-                else if (moveDirection.x < 0)
-                    transform.localScale = new Vector3(1, 1, 1); // Facing left
+                    transform.localScale = new Vector3(-1, 1, 1); 
+                    transform.localScale = new Vector3(1, 1, 1); 
             }
         }
 

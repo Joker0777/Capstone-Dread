@@ -50,12 +50,12 @@ public class EventManager : ScriptableObject
     //PlayerRespawn
    // public Action<Unit> OnPlayerRespawn;
 
-    //Score
-    public Action<string> OnScoreIncrease;
-    public Action<string> OnGetHighScore;
 
     //Scene/GameEnd
-    public Action OnGameSceneEnd;
+    public Action OnGameEnd;
+    public Action OnGaameRestart;
+    public Action OnGameStart;
+    public Action OnResetAimTarget;
 
     //Pause
     public Action OnPauseGame;

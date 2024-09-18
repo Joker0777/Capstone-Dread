@@ -621,6 +621,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -8653719598885068355, guid: 8c3db546cbe65fd4790e1c51595f8409, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: -8513756712193345162, guid: 8c3db546cbe65fd4790e1c51595f8409, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.18793437
@@ -1200,8 +1204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterType: 1
-  _maxHealth: 150
-  __impactDamage: 0
+  _maxHealth: 200
   _particleEffectTag: EnemyDestroyedSpider
   _deathSoundEffectTag: SpiderDeathEffect
   _hurtSoundEffectTag: SpiderHurtEffect
@@ -1231,7 +1234,7 @@ MonoBehaviour:
   backoffRange: 2
   targetLayer:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 64
   groundCheck: {fileID: 5990261030587438512}
   frontCheck: {fileID: 6351978224189928813}
   groundCheckRadius: 0.2

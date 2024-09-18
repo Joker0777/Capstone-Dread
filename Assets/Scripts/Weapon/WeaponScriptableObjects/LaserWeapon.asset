@@ -24,6 +24,6 @@ MonoBehaviour:
   _shellCasingTag: LaserShell
   _accuracy: 0.95
   _weaponSpeed: 300
-  _weaponDamage: 7
+  _weaponDamage: 5
   _weaponRange: 0
-  _magazineSize: 200
+  _magazineSize: 70

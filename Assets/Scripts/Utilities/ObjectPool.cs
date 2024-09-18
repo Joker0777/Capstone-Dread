@@ -51,11 +51,11 @@ public class ObjectPool<T> where T : MonoBehaviour
 
     public void Clear()
     {
-        foreach (T obj in _objectPool)
+        for (int i = _objectPool.Count - 1; i >= 0; i--)
         {
-            if (obj != null)
+            if (_objectPool[i] != null)
             {
-                Object.Destroy(obj.gameObject);
+                Object.Destroy(_objectPool[i].gameObject);
             }
         }
         _objectPool.Clear();

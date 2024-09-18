@@ -68,7 +68,7 @@ public class WeaponSystem : CharacterSystems
     {
         if (_primaryCooldownTimer.IsRunningCoroutine) return;
         UseWeaponLogic(_currentPrimaryWeapon, ref _primaryWeaponSpawnPointIndex, _primaryCooldownTimer);
-        Debug.Log("In use primary weapon");
+      //  Debug.Log("In use primary weapon");
     }
 
     protected virtual void UseWeaponLogic(Weapon weapon, ref int spawnPointIndex, Timer cooldownTimer)

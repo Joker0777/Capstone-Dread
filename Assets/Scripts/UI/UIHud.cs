@@ -13,14 +13,26 @@ public class UIHud : MonoBehaviour
         _uiElements = GetComponentsInChildren<UIElement>();    
     }
 
+    private void Start()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     private void OnEnable()
     {
-        _eventManager.OnUIChange += UpdateUI;   
+        _eventManager.OnUIChange += UpdateUI;
+        _eventManager.OnGameEnd += DestroyUI;
     }
 
     private void OnDisable()
     {
         _eventManager.OnUIChange -= UpdateUI;
+        _eventManager.OnGameEnd -= DestroyUI;
+    }
+
+    private void DestroyUI()
+    {
+        Destroy(gameObject);
     }
 
     private void UpdateUI(UIElementType elementType, string UIText)

@@ -664,12 +664,12 @@ MonoBehaviour:
   target: {fileID: 0}
   moveSpeed: 1
   detectRange: 15
-  attackRange: 10
+  attackRange: 12
   stopRange: 6
   backoffRange: 3
   targetLayer:
     serializedVersion: 2
-    m_Bits: 2112
+    m_Bits: 2048
   groundCheck: {fileID: 5194981778223393203}
   frontCheck: {fileID: 2872825973899193733}
   groundCheckRadius: 0.2
@@ -697,8 +697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterType: 1
-  _maxHealth: 60
-  __impactDamage: 0
+  _maxHealth: 50
   _particleEffectTag: EnemyDestroyedDorito
   _deathSoundEffectTag: DoritoDeathEffect
   _hurtSoundEffectTag: DoritoHurtEffect

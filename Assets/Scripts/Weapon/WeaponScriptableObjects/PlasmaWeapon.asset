@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponVisual: {fileID: 403246997971825730, guid: c4ad0f7b0ed490942bb352969d58d085, type: 3}
   _weaponObjectPoolTag: PlasmaWeapon
-  _weaponCooldown: 1.2
+  _weaponCooldown: 1
   _currentWeaponCooldown: 0
   _projectilePrefab: {fileID: 1368470505411515553, guid: 511186f1c1af1df4aac69218009577ee, type: 3}
   _poolSize: 6

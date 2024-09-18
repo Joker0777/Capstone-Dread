@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PickUpManager : MonoBehaviour
@@ -9,8 +10,6 @@ public class PickUpManager : MonoBehaviour
     public static PickUpManager instance;
 
     [SerializeField] private PlayerCharacter _playerCharacter;
-
-    //player systems references
     private CharacterWeaponSystem _weaponSystem;
 
     private EventManager _eventManager;
@@ -21,7 +20,7 @@ public class PickUpManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+           // DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -29,11 +28,34 @@ public class PickUpManager : MonoBehaviour
         }
 
         _eventManager = EventManager.Instance;
+
+        if(_playerCharacter == null)
+        {
+            _playerCharacter = FindObjectOfType<PlayerCharacter>();
+        }
+
+    }
+
+    public PlayerCharacter PlayerCharacter 
+    { 
+        set 
+        {
+            _playerCharacter = value;
+            _weaponSystem = _playerCharacter.GetComponent<CharacterWeaponSystem>();
+        } 
     }
 
     private void Start()
     {
-        _weaponSystem = _playerCharacter.GetComponent<CharacterWeaponSystem>();
+        if(_playerCharacter != null)
+        {
+            _weaponSystem = _playerCharacter.GetComponent<CharacterWeaponSystem>();
+        }
+        else
+        {
+            Debug.Log("Player not assinged in pickup manager");
+        }
+
     }
 
 

@@ -13,7 +13,6 @@ public class Character : MonoBehaviour, IDamagable
     protected EventManager _eventManager;
     [SerializeField] protected CharacterType _characterType;
     [SerializeField] protected int _maxHealth = 100;
-    [SerializeField] protected int __impactDamage = 10;
     [SerializeField] string _particleEffectTag;
     [SerializeField] string _deathSoundEffectTag;
     [SerializeField] string _hurtSoundEffectTag;
@@ -41,10 +40,16 @@ public class Character : MonoBehaviour, IDamagable
         _healthSystem.MaxHealth = _maxHealth;
 
 
+
     }
 
     protected void Update()
     {
+        if (_eventManager == null)
+        {
+            _eventManager = EventManager.Instance;
+        }
+
         currentHealth = _healthSystem.CurrentHealth;
         if (_healthSystem.IsDestroyed)
         {
@@ -55,6 +60,8 @@ public class Character : MonoBehaviour, IDamagable
                 _eventManager.OnPlayParticleEffect?.Invoke(_particleEffectTag, transform.position, 1);
                 _eventManager.OnCharacterDestroyed?.Invoke(CharacterType, this, transform.position);
                 _eventManager.OnPlaySoundEffect?.Invoke(_deathSoundEffectTag, transform.position);
+
+                Debug.Log("In health system character destroyed ");
             }
         }
     }
@@ -62,12 +69,14 @@ public class Character : MonoBehaviour, IDamagable
 
     public virtual void DamageTaken(int damage)
     {
+  
+    
         if (!_isDead && !_healthSystem.IsDestroyed)
         {
             _healthSystem.DecreaseHealth(damage);
             _eventManager.OnCharacterHurt?.Invoke(CharacterType, this, transform.position);
             _eventManager.OnPlaySoundEffect?.Invoke(_hurtSoundEffectTag, transform.position);
-            Debug.Log("Damage taken. Current Health " + _healthSystem.CurrentHealth);
+           // Debug.Log("Damage taken. Current Health " + _healthSystem.CurrentHealth);
         }
     }
 
@@ -84,13 +93,6 @@ public class Character : MonoBehaviour, IDamagable
     public int GetHealth()
     {
         return _healthSystem.CurrentHealth;
-    }
-
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
-    {
-        Vector3 hitPoint = collision.contacts[0].point;
- 
-        collision.collider?.attachedRigidbody?.GetComponent<IDamagable>()?.DamageTaken(__impactDamage); 
     }
 
 }

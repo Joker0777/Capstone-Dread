@@ -276,8 +276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterType: 1
-  _maxHealth: 35
-  __impactDamage: 0
+  _maxHealth: 45
   _particleEffectTag: EnemyDestroyedSlime
   _deathSoundEffectTag: SlimeDeathEffect
   _hurtSoundEffectTag: SlimeHurtEffect

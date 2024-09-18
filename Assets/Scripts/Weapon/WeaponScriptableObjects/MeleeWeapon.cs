@@ -20,7 +20,7 @@ public class MeleeWeapon : Weapon
     public override void UseWeapon(Transform spawn, string targetTag)
     {
 
-        Debug.Log("In melee use weapon");
+       
         var hits = Physics2D.CircleCastAll(spawn.position, attackRange,spawn.right, 0f,  targetLayer);
 
         for (int i = 0; i < hits.Length; i++)

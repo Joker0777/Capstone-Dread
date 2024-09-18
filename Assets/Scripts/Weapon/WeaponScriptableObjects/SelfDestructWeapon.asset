@@ -16,7 +16,7 @@ MonoBehaviour:
   _weaponObjectPoolTag: SelfDestructWeapon
   _weaponCooldown: 1
   _currentWeaponCooldown: 0
-  _weaponDamage: 20
+  _weaponDamage: 10
   explosionRadius: 3
   _particleEffectScale: 1
   _targetLayer:

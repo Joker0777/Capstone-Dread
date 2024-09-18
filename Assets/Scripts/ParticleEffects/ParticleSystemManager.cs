@@ -15,7 +15,6 @@ public class ParticleSystemManager : MonoBehaviour
     private void Awake()
     {
         _eventManager = EventManager.Instance;
-        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()

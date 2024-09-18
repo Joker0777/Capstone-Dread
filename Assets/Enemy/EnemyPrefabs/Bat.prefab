@@ -52,11 +52,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  moveSpeed: 3
+  moveSpeed: 2
   detectRange: 30
-  attackRange: 0.5
-  stopRange: 0.5
-  backoffRange: 0
+  attackRange: 1
+  stopRange: 1
+  backoffRange: 0.5
   targetLayer:
     serializedVersion: 2
     m_Bits: 2048
@@ -172,8 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterType: 1
-  _maxHealth: 25
-  __impactDamage: 0
+  _maxHealth: 20
   _particleEffectTag: EnemyDestroyedBat
   _deathSoundEffectTag: BatDeathEffect
   _hurtSoundEffectTag: BatHurtEffect

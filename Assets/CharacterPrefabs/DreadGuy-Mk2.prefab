@@ -7162,7 +7162,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterType: 0
   _maxHealth: 100
-  __impactDamage: 0
   _particleEffectTag: 
   _deathSoundEffectTag: PlayerDeathEffect
   _hurtSoundEffectTag: PlayerHurtEffect
@@ -7247,7 +7246,10 @@ MonoBehaviour:
     weaponTypeTag: DefaultWeapon
   - spawnLocations:
     - {fileID: 6956026525870354820}
-    weaponTypeTag: GernadeWeapon
+    weaponTypeTag: ExplosiveWeapon
+  - spawnLocations:
+    - {fileID: 6956026525870354820}
+    weaponTypeTag: PlasmaWeapon
   _projectileParent: {fileID: 0}
   _weaponVisualTransform: {fileID: 8359262599716228869}
   _weaponVisualOffset: {x: 0.132, y: -0.015, z: 0}

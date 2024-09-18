@@ -132,7 +132,7 @@ public class FlyingENemyBehaviourScript : CharacterSystems
             stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         }
 
-         Destroy(gameObject,2);
+        // Destroy(gameObject,5);
     }
 
     protected bool InRangeOfTarget(float range, GameObject target)
@@ -142,7 +142,7 @@ public class FlyingENemyBehaviourScript : CharacterSystems
 
     private void Patrol()
     {
-        moveDirection = Vector2.zero; // No movement during patrol
+        moveDirection = Vector2.zero; 
 
         if (InRangeOfTarget(detectRange, target))
         {
@@ -173,19 +173,18 @@ public class FlyingENemyBehaviourScript : CharacterSystems
         if (target != null)
         {
             float distance = Vector2.Distance(transform.position, target.transform.position);
-            // Backoff if player is too close
             if (distance <= backoffRange)
             {
                 currentState = EnemyState.Backoff;
             }
             else if (distance <= stopRange)
             {
-                rb.velocity = Vector2.zero; // Stop movement
+                rb.velocity = Vector2.zero; 
 
             }
             else
             {
-                MoveTowardsTarget(); // Move towards target if not in stop range
+                MoveTowardsTarget(); 
             }
 
             if (!InRangeOfTarget(attackRange, target))
@@ -201,11 +200,10 @@ public class FlyingENemyBehaviourScript : CharacterSystems
         {
             Vector2 directionToTarget = (target.transform.position - transform.position).normalized;
 
-            // Move away from the target in the opposite direction
-            moveDirection = -directionToTarget;  // Move in the opposite direction
+      
+            moveDirection = -directionToTarget;  
             rb.velocity = moveDirection * moveSpeed;
 
-            // Transition back to Attack or Detect state if distance increases
             if (Vector2.Distance(target.transform.position, transform.position) > backoffRange)
             {
                 if (InRangeOfTarget(attackRange, target))
@@ -233,16 +231,15 @@ public class FlyingENemyBehaviourScript : CharacterSystems
     {
         if (target != null)
         {
-            // Calculate direction towards the target
             Vector2 directionToTarget = (target.transform.position - transform.position).normalized;
             moveDirection = directionToTarget;
             rb.velocity = moveDirection * moveSpeed;
 
-            // Face the enemy towards the target (only horizontally flip if needed)
+
             if (moveDirection.x > 0)
-                transform.localScale = new Vector3(1, 1, 1); // Facing right
+                transform.localScale = new Vector3(1, 1, 1); 
             else if (moveDirection.x < 0)
-                transform.localScale = new Vector3(-1, 1, 1); // Facing left
+                transform.localScale = new Vector3(-1, 1, 1); 
         }
     }
 
@@ -267,7 +264,7 @@ public class FlyingENemyBehaviourScript : CharacterSystems
             }
             else if (currentState == EnemyState.Backoff)
             {
-                animator.SetBool("isFlying", true); // Flying animation during backoff
+                animator.SetBool("isFlying", true); 
                 animator.SetBool("isAttacking", false);
             }
         }

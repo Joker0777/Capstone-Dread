@@ -15,6 +15,7 @@ public class WaveTrigger : MonoBehaviour
         {
             _triggered = true;  
             GameManager.Instance.StartWaveFromTrigger(_waveIndex);
+            this.gameObject.SetActive(false);
         }
     }
 }

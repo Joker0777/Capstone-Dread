@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponVisual: {fileID: 403246997971825730, guid: 87091008fc5486a4385cc55a4beae3fd, type: 3}
   _weaponObjectPoolTag: DoritoWeapon
   _weaponCooldown: 0.8
-  _currentWeaponCooldown: 1
+  _currentWeaponCooldown: 0
   _projectilePrefab: {fileID: 1368470505411515553, guid: 8935ca848c654da4d91b7deb3ebf0f75, type: 3}
   _poolSize: 10
   _targetTag: Enemy
@@ -24,6 +24,6 @@ MonoBehaviour:
   _shellCasingTag: DefaultShell
   _accuracy: 0.85
   _weaponSpeed: 50
-  _weaponDamage: 15
+  _weaponDamage: 10
   _weaponRange: 5
   _magazineSize: 50

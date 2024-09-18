@@ -16,7 +16,7 @@ MonoBehaviour:
   _weaponObjectPoolTag: BatWeapon
   _weaponCooldown: 0.5
   _currentWeaponCooldown: 0
-  damage: 10
+  damage: 5
   attackRange: 3
   targetLayer:
     serializedVersion: 2
